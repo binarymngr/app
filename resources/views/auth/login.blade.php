@@ -26,11 +26,11 @@
             </div>
             <div class="col-sm-7 col-md-6 col-lg-5 login">
                 <form action="/auth/login" method="POST" class="form-horizontal" role="form">
-                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label for="email" class="col-sm-2 col-md-2 control-label">Email</label>
                         <div class="col-sm-10 col-md-10">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="email@domain.tld" tabindex="1" required>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="email@domain.tld" value="{{ Session::get('email', '') }}" tabindex="1" required>
                         </div>
                     </div>
                     <div class="form-group">
@@ -56,6 +56,20 @@
             <div class="col-sm-5 col-md-6 col-lg-7 details">
                 <p><strong>Welcome to BinaryMngr!</strong><br>
                     Enjoy the new way of managing self-compiled binaries.</p>
+                    @if (Session::get('login_failed'))
+                        <p style="color: red"><br>
+                            <span class="pficon-layered">
+                                <span class="pficon pficon-error-octagon"></span>
+                                <span class="pficon pficon-error-exclamation"></span>
+                            </span>
+                            Invalid credentials. Please try again.
+                        </p>
+                    @elseif (Session::get('logged_out'))
+                        <p style="color: #439b3b"><br>
+                            <span class="pficon pficon-ok"></span>
+                            You logged out successfully.
+                        </p>
+                    @endif
             </div>
         </div>
     </div>
