@@ -115,5 +115,5 @@ $app->post('auth/login', function(Request $rqst) {
     if (Auth::attempt($rqst->only('email', 'password'), $remember)) {
         return redirect()->route('dashboard');
     }
-    return redirect()->route('login')->with('login_failed', true)->withInput();
+    return redirect()->route('login')->with('login_failed', true)->with('email', $rqst->input('email'));
 });
