@@ -26,6 +26,7 @@
             </div>
             <div class="col-sm-7 col-md-6 col-lg-5 login">
                 <form action="/auth/login" method="POST" class="form-horizontal" role="form">
+                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <div class="form-group">
                         <label for="email" class="col-sm-2 col-md-2 control-label">Email</label>
                         <div class="col-sm-10 col-md-10">
@@ -39,7 +40,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-xs-12 col-sm-12 col-md-12 submit">
+                        <div class="col-xs-8 col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-6">
+                            <div class="checkbox">
+                                <label>
+                                    <input tabindex="3" type="checkbox" name="remember"> Remember Email
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 submit">
                             <button type="submit" class="btn btn-primary btn-lg" tabindex="4">Log In</button>
                         </div>
                     </div>

@@ -75,7 +75,8 @@ $app->get('auth/login', ['as' => 'login', function() {
 }]);
 
 $app->post('auth/login', function(Request $rqst) {
-    if (Auth::attempt($rqst->only('email', 'password'))) {
+    $remember = $rqst->input('remember') === 'on' ? true : false;
+    if (Auth::attempt($rqst->only('email', 'password'), $remember)) {
         return redirect()->route('dashboard');
     }
     return view('auth.login');
@@ -85,7 +86,7 @@ $app->get('auth/logout', ['as' => 'logout', function(Request $rqst) {
     if (Auth::check()) {
         Auth::logout();
     }
-    return view('auth.login');
+    return redirect()->route('login');
 }]);
 
 
