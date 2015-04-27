@@ -1,0 +1,22 @@
+{
+  "name": "binarymngr",
+  "version": "0.0.1",
+  "authors": [
+    "Michel Käser <mail@michelkaeser.ch>"
+  ],
+  "license": "MIT",
+  "homepage": "https://phabricator.michelkaeser.ch/project/view/1/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "public/components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "datatables": "~1.10.6",
+    "patternfly": "~1.1.4"
+  }
+}
