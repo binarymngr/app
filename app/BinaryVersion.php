@@ -14,17 +14,16 @@ class BinaryVersion extends Ardent
         'eol'        => 'date',
         'binary_id'  => 'required|exists:binaries,id|integer'
     ];
-    protected $visible   = ['id', 'identifier', 'note', 'eol', 'binary'];
-    protected $with      = ['binary'];
+    protected $visible   = ['id', 'identifier', 'note', 'eol', 'binary_id'];
 
     public static $relationsData = [
         'binary' => [
             self::BELONGS_TO, 'App\Binary',
-            'table' => 'binaries', 'foreignKey' => 'binary_id', 'otherKey' => 'id'
+            'table' => 'binaries'
         ],
         'servers' => [
             self::BELONGS_TO_MANY, 'App\Server',
-            'table' => 'servers_binary_versions', 'otherKey' => 'version_id'
+            'table' => 'servers_binary_versions'
         ]
     ];
 }

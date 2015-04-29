@@ -4,17 +4,16 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RequireAuth
+class RequireAuthentication
 {
     /**
      * @{inherit}
      */
     public function handle(Request $rqst, Closure $next)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
+        // if (!Auth::check()) {
+        //     return redirect()->route('login');
+        // }
         return $next($rqst);
     }
 }

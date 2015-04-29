@@ -37,34 +37,21 @@ abstract class RESTController extends Controller
     /**
      * Deletes the record with the given ID (if exists).
      *
+     * TODO: detach() relations
+     *
      * @method DELETE
      *
      * @param int $id the record's ID
      *
      * @return Response
      */
-    public function delete($id)
+    public function deleteById($id)
     {
         $model  = static::$model;
         $record = $model::findOrFail($id);
         $record->delete();
 
         return $record;
-    }
-
-    /**
-     * Returns the record with the given primary key ID.
-     *
-     * @method GET
-     *
-     * @param int $id the record to get
-     *
-     * @return Response
-     */
-    public function get($id)
-    {
-        $model = static::$model;
-        return $model::findOrFail($id);
     }
 
     /**
@@ -81,13 +68,28 @@ abstract class RESTController extends Controller
     }
 
     /**
+     * Returns the record with the given primary key ID.
+     *
+     * @method GET
+     *
+     * @param int $id the record to get
+     *
+     * @return Response
+     */
+    public function getById($id)
+    {
+        $model = static::$model;
+        return $model::findOrFail($id);
+    }
+
+    /**
      * Returns a list of allowed HTTP methods on the requested resource.
      *
      * @method OPTIONS
      *
      * @return Response
      */
-    public function optionsAll()
+    public function optionsForAll()
     {
         return response('', 200)->header('Allow', 'GET, HEAD, OPTIONS, POST');
     }
@@ -101,13 +103,15 @@ abstract class RESTController extends Controller
      *
      * @return Response
      */
-    public function optionsId($id)
+    public function optionsForId($id)
     {
         return response('', 200)->header('Allow', 'DELETE, GET, HEAD, OPTIONS, PUT');
     }
 
     /**
      * Updates the record with the given ID with the values provided by the PUT request.
+     *
+     * TODO: doesn't work
      *
      * @method PUT
      *
@@ -116,7 +120,7 @@ abstract class RESTController extends Controller
      *
      * @return Response
      */
-    public function update($id)
+    public function putById($id)
     {
         $response = null;
         $model    = static::$model;

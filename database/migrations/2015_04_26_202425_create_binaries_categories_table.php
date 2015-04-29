@@ -15,13 +15,13 @@ class CreateBinariesCategoriesTable extends Migration
         Schema::create('binaries_categories', function(Blueprint $tbl)
         {
             $tbl->integer('binary_id')->unsigned();
-            $tbl->integer('category_id')->unsigned();
+            $tbl->integer('binary_category_id')->unsigned();
         });
 
         Schema::table('binaries_categories', function (Blueprint $tbl) {
-            $tbl->primary(['binary_id', 'category_id']);
+            $tbl->primary(['binary_id', 'binary_category_id']);
             $tbl->foreign('binary_id')->references('id')->on('binaries');
-            $tbl->foreign('category_id')->references('id')->on('binary_categories');
+            $tbl->foreign('binary_category_id')->references('id')->on('binary_categories');
         });
     }
 

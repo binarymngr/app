@@ -18,7 +18,7 @@ class User extends Ardent implements AuthenticatableContract, CanResetPasswordCo
     protected $dates     = ['created_at', 'updated_at'];
     public static $passwordAttributes = ['password'];
     public static $rules = [
-        'email'    => 'required|email', // TODO: unique
+        'email'    => 'required|email',  # TODO: unique
         'password' => 'required'
     ];
     protected $visible   = ['id', 'email'];
@@ -29,7 +29,7 @@ class User extends Ardent implements AuthenticatableContract, CanResetPasswordCo
         ],
         'roles' => [
             self::BELONGS_TO_MANY, 'App\Role',
-            'table' => 'user_roles'
+            'table' => 'users_roles'
         ],
         'servers' => [
             self::HAS_MANY, 'App\Server'

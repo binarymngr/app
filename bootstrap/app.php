@@ -60,11 +60,11 @@ $app->middleware([
     'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
     'Illuminate\Session\Middleware\StartSession',
     'Illuminate\View\Middleware\ShareErrorsFromSession',
-    'Laravel\Lumen\Http\Middleware\VerifyCsrfToken',
+    //'Laravel\Lumen\Http\Middleware\VerifyCsrfToken',  # TODO: re-enable
 ]);
 
 $app->routeMiddleware([
-    'requireAuth' => 'App\Http\Middleware\RequireAuth',
+    'requireAuth' => 'App\Http\Middleware\RequireAuthentication',
 ]);
 
 /*

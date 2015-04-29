@@ -15,13 +15,13 @@ class CreateServersBinaryVersionsTable extends Migration
         Schema::create('servers_binary_versions', function(Blueprint $tbl)
         {
             $tbl->integer('server_id')->unsigned();
-            $tbl->integer('version_id')->unsigned();
+            $tbl->integer('binary_version_id')->unsigned();
         });
 
         Schema::table('servers_binary_versions', function (Blueprint $tbl) {
-            $tbl->primary(['server_id', 'version_id']);
+            $tbl->primary(['server_id', 'binary_version_id']);
             $tbl->foreign('server_id')->references('id')->on('servers');
-            $tbl->foreign('version_id')->references('id')->on('binary_versions');
+            $tbl->foreign('binary_version_id')->references('id')->on('binary_versions');
         });
     }
 

@@ -10,13 +10,14 @@ class BinaryCategory extends Ardent
     protected $fillable  = ['name', 'description'];
     protected $dates     = ['created_at', 'updated_at'];
     public static $rules = [
-        'name'        => 'required|between:1,75' // TODO: unique
+        'name'        => 'required|between:1,75'  # TODO: unique
     ];
     protected $visible   = ['id', 'name', 'description'];
 
     public static $relationsData = [
         'binaries' => [
-            self::HAS_MANY, 'App\Binary'
+            self::BELONGS_TO_MANY, 'App\Binary',
+            'table' => 'binaries_categories'
         ]
     ];
 }

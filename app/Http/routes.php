@@ -26,67 +26,88 @@ $app->group(['middleware' => 'requireAuth'], function($app)
     /*
      | Binary categories
      */
-    $app->delete ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@delete');
-    $app->get    ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@get');
-    $app->options('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@optionsId');
-    $app->put    ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@update');
+    # TODO: for each :: options, create, delete and put
+    $app->get('binaries/categories/{id}/binaries', 'App\Http\Controllers\BinaryCategoryController@getBinariesForId');
+
+    $app->delete ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@deleteById');
+    $app->get    ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@getById');
+    $app->options('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@optionsForId');
+    $app->put    ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@putById');
     $app->get    ('binaries/categories',      'App\Http\Controllers\BinaryCategoryController@getAll');
-    $app->options('binaries/categories',      'App\Http\Controllers\BinaryCategoryController@optionsAll');
+    $app->options('binaries/categories',      'App\Http\Controllers\BinaryCategoryController@optionsForAll');
     $app->post   ('binaries/categories',      'App\Http\Controllers\BinaryCategoryController@create');
 
     /*
      | Binary versions
      */
-    $app->delete ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@delete');
-    $app->get    ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@get');
-    $app->options('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@optionsId');
-    $app->put    ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@update');
+    # TODO: for each :: options, create, delete and put
+    $app->get('binaries/versions/{id}/servers', 'App\Http\Controllers\BinaryVersionController@getServersForId');
+
+    $app->delete ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@deleteById');
+    $app->get    ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@getById');
+    $app->options('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@optionsForId');
+    $app->put    ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@putById');
     $app->get    ('binaries/versions',      'App\Http\Controllers\BinaryVersionController@getAll');
-    $app->options('binaries/versions',      'App\Http\Controllers\BinaryVersionController@optionsAll');
+    $app->options('binaries/versions',      'App\Http\Controllers\BinaryVersionController@optionsForAll');
     $app->post   ('binaries/versions',      'App\Http\Controllers\BinaryVersionController@create');
 
     /*
      | Binaries
      */
-    $app->delete ('binaries/{id}', 'App\Http\Controllers\BinaryController@delete');
-    $app->get    ('binaries/{id}', 'App\Http\Controllers\BinaryController@get');
-    $app->options('binaries/{id}', 'App\Http\Controllers\BinaryController@optionsId');
-    $app->put    ('binaries/{id}', 'App\Http\Controllers\BinaryController@update');
+    # TODO: for each :: options, create, delete and put
+    $app->get('binaries/{id}/categories', 'App\Http\Controllers\BinaryController@getCategoriesForId');
+    $app->get('binaries/{id}/versions',   'App\Http\Controllers\BinaryController@getVersionsForId');
+
+    $app->delete ('binaries/{id}', 'App\Http\Controllers\BinaryController@deleteById');
+    $app->get    ('binaries/{id}', 'App\Http\Controllers\BinaryController@getById');
+    $app->options('binaries/{id}', 'App\Http\Controllers\BinaryController@optionsForId');
+    $app->put    ('binaries/{id}', 'App\Http\Controllers\BinaryController@putById');
     $app->get    ('binaries',      'App\Http\Controllers\BinaryController@getAll');
-    $app->options('binaries',      'App\Http\Controllers\BinaryController@optionsAll');
+    $app->options('binaries',      'App\Http\Controllers\BinaryController@optionsForAll');
     $app->post   ('binaries',      'App\Http\Controllers\BinaryController@create');
 
     /*
      | Roles
      */
-    $app->delete ('roles/{id}', 'App\Http\Controllers\RoleController@delete');
-    $app->get    ('roles/{id}', 'App\Http\Controllers\RoleController@get');
-    $app->options('roles/{id}', 'App\Http\Controllers\RoleController@optionsId');
-    $app->put    ('roles/{id}', 'App\Http\Controllers\RoleController@update');
+    # TODO: for each :: options, create, delete and put
+    $app->get('roles/{id}/users', 'App\Http\Controllers\RoleController@getUsersForId');
+
+    $app->delete ('roles/{id}', 'App\Http\Controllers\RoleController@deleteById');
+    $app->get    ('roles/{id}', 'App\Http\Controllers\RoleController@getById');
+    $app->options('roles/{id}', 'App\Http\Controllers\RoleController@optionsForId');
+    $app->put    ('roles/{id}', 'App\Http\Controllers\RoleController@putById');
     $app->get    ('roles',      'App\Http\Controllers\RoleController@getAll');
-    $app->options('roles',      'App\Http\Controllers\RoleController@optionsAll');
+    $app->options('roles',      'App\Http\Controllers\RoleController@optionsForAll');
     $app->post   ('roles',      'App\Http\Controllers\RoleController@create');
 
     /*
      | Servers
      */
-    $app->delete ('servers/{id}', 'App\Http\Controllers\ServerController@delete');
-    $app->get    ('servers/{id}', 'App\Http\Controllers\ServerController@get');
-    $app->options('servers/{id}', 'App\Http\Controllers\ServerController@optionsId');
-    $app->put    ('servers/{id}', 'App\Http\Controllers\ServerController@update');
+    # TODO: for each :: options, create, delete and put
+    $app->get('servers/{id}/binaries', 'App\Http\Controllers\ServerController@getBinariesForId');
+
+    $app->delete ('servers/{id}', 'App\Http\Controllers\ServerController@deleteById');
+    $app->get    ('servers/{id}', 'App\Http\Controllers\ServerController@getById');
+    $app->options('servers/{id}', 'App\Http\Controllers\ServerController@optionsForId');
+    $app->put    ('servers/{id}', 'App\Http\Controllers\ServerController@putById');
     $app->get    ('servers',      'App\Http\Controllers\ServerController@getAll');
-    $app->options('servers',      'App\Http\Controllers\ServerController@optionsAll');
+    $app->options('servers',      'App\Http\Controllers\ServerController@optionsForAll');
     $app->post   ('servers',      'App\Http\Controllers\ServerController@create');
 
     /*
      | Users
      */
-    $app->delete ('users/{id}', 'App\Http\Controllers\UserController@delete');
-    $app->get    ('users/{id}', 'App\Http\Controllers\UserController@get');
-    $app->options('users/{id}', 'App\Http\Controllers\UserController@optionsId');
-    $app->put    ('users/{id}', 'App\Http\Controllers\UserController@update');
+    # TODO: for each :: options, create, delete and put
+    $app->get('users/{id}/binaries', 'App\Http\Controllers\UserController@getBinariesForId');
+    $app->get('users/{id}/roles',    'App\Http\Controllers\UserController@getRolesForId');
+    $app->get('users/{id}/servers',  'App\Http\Controllers\UserController@getServersForId');
+
+    $app->delete ('users/{id}', 'App\Http\Controllers\UserController@deleteById');
+    $app->get    ('users/{id}', 'App\Http\Controllers\UserController@getById');
+    $app->options('users/{id}', 'App\Http\Controllers\UserController@optionsForId');
+    $app->put    ('users/{id}', 'App\Http\Controllers\UserController@putById');
     $app->get    ('users',      'App\Http\Controllers\UserController@getAll');
-    $app->options('users',      'App\Http\Controllers\UserController@optionsAll');
+    $app->options('users',      'App\Http\Controllers\UserController@optionsForAll');
     $app->post   ('users',      'App\Http\Controllers\UserController@create');
 
     /*
