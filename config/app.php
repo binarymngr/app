@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY', 'SomeRandomString!!!'),
+    'key' => env('APP_KEY', 'foh7acoo0Paeg0thei7oc2chaec9oosh'),
 
     /*
     |--------------------------------------------------------------------------
