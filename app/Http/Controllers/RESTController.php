@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 abstract class RESTController extends Controller
@@ -19,10 +20,11 @@ abstract class RESTController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(Request $rqst)
     {
         $response = null;
-        $record   = new static::$model;
+        $record = new static::$model;
+        # TODO: unique checks
         if ($record->validate() && $record->save()) {
             $response = $record;
         } else {
@@ -30,14 +32,11 @@ abstract class RESTController extends Controller
                 'errors' => $record->errors()->all()
             ];
         }
-
         return $response;
     }
 
     /**
      * Deletes the record with the given ID (if exists).
-     *
-     * TODO: detach() relations
      *
      * @method DELETE
      *
@@ -47,11 +46,19 @@ abstract class RESTController extends Controller
      */
     public function deleteById($id)
     {
-        $model  = static::$model;
-        $record = $model::findOrFail($id);
-        $record->delete();
-
-        return $record;
+        $response = null;
+        $model = static::$model;
+        $record = $model::find($id);
+        if ($record === null) {
+            $response = [
+                'errors' => 'Not found',
+                'status' => 404
+            ];
+        } else {
+            $record->delete();
+            $response = $record;
+        }
+        return $response;
     }
 
     /**
@@ -78,8 +85,18 @@ abstract class RESTController extends Controller
      */
     public function getById($id)
     {
-        $model = static::$model;
-        return $model::findOrFail($id);
+        $response = null;
+        $model  = static::$model;
+        $record = $model::find($id);
+        if ($record === null) {
+            $response = [
+                'errors' => 'Not found',
+                'status' => 404
+            ];
+        } else {
+            $response = $record;
+        }
+        return $response;
     }
 
     /**
@@ -111,8 +128,6 @@ abstract class RESTController extends Controller
     /**
      * Updates the record with the given ID with the values provided by the PUT request.
      *
-     * TODO: doesn't work
-     *
      * @method PUT
      *
      * @param Request $rqst the PUT request
@@ -120,19 +135,24 @@ abstract class RESTController extends Controller
      *
      * @return Response
      */
-    public function putById($id)
+    public function putById(Request $rqst, $id)
     {
         $response = null;
-        $model    = static::$model;
-        $record   = $model::findOrFail($id);
-        if ($record->updateUniques() && $record->validateUniques() && $record->validate() && $record->save()) {
+        $model = static::$model;
+        $record = $model::find($id);
+        if ($record === null) {
+            $response = [
+                'errors' => 'Not found',
+                'status' => 404
+            ];
+        # TODO: unique checks
+    } elseif ($record->validate() && $record->update()) {
             $response = $record;
         } else {
             $response = [
                 'errors' => $record->errors()->all()
             ];
         }
-
         return $response;
     }
 }

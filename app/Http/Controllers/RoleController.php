@@ -1,22 +1,15 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Controllers\RESTController;
+use App\Role;
 
-class RoleController extends RESTController
+final class RoleController extends RESTController
 {
-    /**
-     * @{inherit}
-     */
     protected static $model = 'App\Role';
 
 
-    /**
-     *
-     */
-    public function getUsersForId($id)
+    public function __construct()
     {
-        $model  = static::$model;
-        $record = $model::findOrFail($id);
-        return $record->users;
+        $this->middleware('forceAdminRole');
     }
 }

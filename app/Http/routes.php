@@ -13,22 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-$app->group(['middleware' => 'requireAuth'], function($app)
+/*
+ | Routes protected by logged-in middleware
+ */
+$app->group(['middleware' => 'forceLoggedIn'], function($app)
 {
-    /*
-     | Auths
-     */
-    $app->get('auth/logout', ['as' => 'logout', function(Request $rqst) {
-        Auth::logout();
-        return redirect()->route('login')->with('logged_out', true);
-    }]);
-
     /*
      | Binary categories
      */
-    # TODO: for each :: options, create, delete and put
-    $app->get('binaries/categories/{id}/binaries', 'App\Http\Controllers\BinaryCategoryController@getBinariesForId');
-
     $app->delete ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@deleteById');
     $app->get    ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@getById');
     $app->options('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@optionsForId');
@@ -37,12 +29,10 @@ $app->group(['middleware' => 'requireAuth'], function($app)
     $app->options('binaries/categories',      'App\Http\Controllers\BinaryCategoryController@optionsForAll');
     $app->post   ('binaries/categories',      'App\Http\Controllers\BinaryCategoryController@create');
 
+
     /*
      | Binary versions
      */
-    # TODO: for each :: options, create, delete and put
-    $app->get('binaries/versions/{id}/servers', 'App\Http\Controllers\BinaryVersionController@getServersForId');
-
     $app->delete ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@deleteById');
     $app->get    ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@getById');
     $app->options('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@optionsForId');
@@ -51,13 +41,10 @@ $app->group(['middleware' => 'requireAuth'], function($app)
     $app->options('binaries/versions',      'App\Http\Controllers\BinaryVersionController@optionsForAll');
     $app->post   ('binaries/versions',      'App\Http\Controllers\BinaryVersionController@create');
 
+
     /*
      | Binaries
      */
-    # TODO: for each :: options, create, delete and put
-    $app->get('binaries/{id}/categories', 'App\Http\Controllers\BinaryController@getCategoriesForId');
-    $app->get('binaries/{id}/versions',   'App\Http\Controllers\BinaryController@getVersionsForId');
-
     $app->delete ('binaries/{id}', 'App\Http\Controllers\BinaryController@deleteById');
     $app->get    ('binaries/{id}', 'App\Http\Controllers\BinaryController@getById');
     $app->options('binaries/{id}', 'App\Http\Controllers\BinaryController@optionsForId');
@@ -66,12 +53,10 @@ $app->group(['middleware' => 'requireAuth'], function($app)
     $app->options('binaries',      'App\Http\Controllers\BinaryController@optionsForAll');
     $app->post   ('binaries',      'App\Http\Controllers\BinaryController@create');
 
+
     /*
      | Roles
      */
-    # TODO: for each :: options, create, delete and put
-    $app->get('roles/{id}/users', 'App\Http\Controllers\RoleController@getUsersForId');
-
     $app->delete ('roles/{id}', 'App\Http\Controllers\RoleController@deleteById');
     $app->get    ('roles/{id}', 'App\Http\Controllers\RoleController@getById');
     $app->options('roles/{id}', 'App\Http\Controllers\RoleController@optionsForId');
@@ -80,12 +65,10 @@ $app->group(['middleware' => 'requireAuth'], function($app)
     $app->options('roles',      'App\Http\Controllers\RoleController@optionsForAll');
     $app->post   ('roles',      'App\Http\Controllers\RoleController@create');
 
+
     /*
      | Servers
      */
-    # TODO: for each :: options, create, delete and put
-    $app->get('servers/{id}/binaries', 'App\Http\Controllers\ServerController@getBinariesForId');
-
     $app->delete ('servers/{id}', 'App\Http\Controllers\ServerController@deleteById');
     $app->get    ('servers/{id}', 'App\Http\Controllers\ServerController@getById');
     $app->options('servers/{id}', 'App\Http\Controllers\ServerController@optionsForId');
@@ -94,14 +77,10 @@ $app->group(['middleware' => 'requireAuth'], function($app)
     $app->options('servers',      'App\Http\Controllers\ServerController@optionsForAll');
     $app->post   ('servers',      'App\Http\Controllers\ServerController@create');
 
+
     /*
      | Users
      */
-    # TODO: for each :: options, create, delete and put
-    $app->get('users/{id}/binaries', 'App\Http\Controllers\UserController@getBinariesForId');
-    $app->get('users/{id}/roles',    'App\Http\Controllers\UserController@getRolesForId');
-    $app->get('users/{id}/servers',  'App\Http\Controllers\UserController@getServersForId');
-
     $app->delete ('users/{id}', 'App\Http\Controllers\UserController@deleteById');
     $app->get    ('users/{id}', 'App\Http\Controllers\UserController@getById');
     $app->options('users/{id}', 'App\Http\Controllers\UserController@optionsForId');
@@ -121,20 +100,29 @@ $app->group(['middleware' => 'requireAuth'], function($app)
     }]);
 });
 
-/*
- | Login
- */
-$app->get('auth/login', ['as' => 'login', function() {
-    if (Auth::check()) {
-        return redirect()->route('dashboard');
-    }
-    return view('auth.login');
-}]);
 
-$app->post('auth/login', function(Request $rqst) {
-    $remember = $rqst->input('remember') === 'on' ? true : false;
-    if (Auth::attempt($rqst->only('email', 'password'), $remember)) {
-        return redirect()->route('dashboard');
-    }
-    return redirect()->route('login')->with('login_failed', true)->with('email', $rqst->input('email'));
-});
+/*
+ | Authentication
+ */
+ $app->get('auth/login', ['as' => 'login', function() {
+     if (Auth::check()) {
+         return redirect()->route('dashboard');
+     }
+     return view('auth.login');
+ }]);
+
+ $app->post('auth/login', function(Request $rqst) {
+     $remember = $rqst->input('remember') === 'on' ? true : false;
+     if (Auth::attempt($rqst->only('email', 'password'), $remember)) {
+         return redirect()->route('dashboard');
+     }
+     return redirect()->route('login')->with('login_failed', true)->with('email', $rqst->input('email'));
+ });
+
+ $app->get('auth/logout', ['as' => 'logout', function(Request $rqst) {
+     if (Auth::check()) {
+         Auth::logout();
+         return redirect()->route('login')->with('logged_out', true);
+     }
+     return redirect()->route('login');
+ }]);

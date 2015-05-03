@@ -1,42 +1,15 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Controllers\RESTController;
+use App\User;
 
-class UserController extends RESTController
+final class UserController extends RESTController
 {
-    /**
-     * @{inherit}
-     */
     protected static $model = 'App\User';
 
 
-    /**
-     *
-     */
-    public function getBinariesForId($id)
+    public function __construct()
     {
-        $model  = static::$model;
-        $record = $model::findOrFail($id);
-        return $record->binaries;
-    }
-
-    /**
-     *
-     */
-    public function getRolesForId($id)
-    {
-        $model  = static::$model;
-        $record = $model::findOrFail($id);
-        return $record->roles;
-    }
-
-    /**
-     *
-     */
-    public function getServersForId($id)
-    {
-        $model  = static::$model;
-        $record = $model::findOrFail($id);
-        return $record->servers;
+        $this->middleware('forceAdminRole');
     }
 }
