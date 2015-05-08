@@ -53,7 +53,7 @@ final class ServerController extends RESTController
                 ];
             }
         } else {
-            abort(403);
+            abort(401);
         }
         return $response;
     }

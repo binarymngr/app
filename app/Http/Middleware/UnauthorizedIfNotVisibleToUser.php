@@ -16,6 +16,6 @@ final class UnauthorizedIfNotVisibleToUser
         if (!method_exists($response->original, 'isVisibleToUser') || $response->original->isVisibleToUser($user)) {
             return $response;
         }
-        return abort(403);
+        return abort(401);
     }
 }

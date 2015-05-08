@@ -14,6 +14,6 @@ final class UnauthorizedIfNotAdmin
         if (Auth::check() && Auth::user()->isAdmin()) {
             return $next($rqst);
         }
-        return abort(403);
+        return abort(401);
     }
 }
