@@ -43,10 +43,7 @@ final class BinaryController extends RESTController
         $user = Auth::user();
         $binary = Binary::find($id);
         if ($binary === null) {
-            $response = [
-                'errors' => 'Not found',
-                'status' => 404
-            ];
+            abort(404, 'Binary not found.');
         } elseif ($binary->isVisibleToUser($user)) {
             if ($binary->validate() && $binary->update()) {
                 $response = $binary;
@@ -56,10 +53,7 @@ final class BinaryController extends RESTController
                 ];
             }
         } else {
-            $response = [
-                'errors' => 'Unauthorized',
-                'status' => 401
-            ];
+            abort(401);
         }
         return $response;
     }

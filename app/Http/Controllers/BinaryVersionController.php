@@ -20,10 +20,7 @@ final class BinaryVersionController extends RESTController
         if ($binary !== null && $binary->isVisibleToUser(Auth::user())) {
             return parent::create($rqst);
         }
-        return [
-            'errors' => 'Unauthorized',
-            'status' => 401
-        ];
+        return abort(401);
     }
 
     /**
@@ -43,10 +40,7 @@ final class BinaryVersionController extends RESTController
         $user = Auth::user();
         $version = BinaryVersion::find($id);
         if ($version === null) {
-            $response = [
-                'errors' => 'Not found',
-                'status' => 404
-            ];
+            abort(404, 'Binary version not found.');
         } elseif ($version->isVisibleToUser($user)) {
             if ($version->validate() && $version->update()) {
                 $response = $version;
@@ -56,10 +50,7 @@ final class BinaryVersionController extends RESTController
                 ];
             }
         } else {
-            $response = [
-                'errors' => 'Unauthorized',
-                'status' => 401
-            ];
+            abort(401);
         }
         return $response;
     }

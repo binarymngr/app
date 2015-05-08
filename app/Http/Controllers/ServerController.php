@@ -43,10 +43,7 @@ final class ServerController extends RESTController
         $user = Auth::user();
         $server = Server::find($id);
         if ($server === null) {
-            $response = [
-                'errors' => 'Not found',
-                'status' => 404
-            ];
+            abort(404, 'Server not found.');
         } elseif ($server->isVisibleToUser($user)) {
             if ($server->validate() && $server->update()) {
                 $response = $server;
@@ -56,10 +53,7 @@ final class ServerController extends RESTController
                 ];
             }
         } else {
-            $response = [
-                'errors' => 'Unauthorized',
-                'status' => 401
-            ];
+            abort(401);
         }
         return $response;
     }
