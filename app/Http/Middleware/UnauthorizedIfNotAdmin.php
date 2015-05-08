@@ -3,7 +3,6 @@
 use Auth;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 final class UnauthorizedIfNotAdmin
 {
@@ -15,9 +14,6 @@ final class UnauthorizedIfNotAdmin
         if (Auth::check() && Auth::user()->isAdmin()) {
             return $next($rqst);
         }
-        return response()->json([
-            'errors' => 'Unauthorized',
-            'status' => 401
-        ]);
+        return abort(403);
     }
 }

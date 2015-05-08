@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 abstract class RESTController extends Controller
 {
@@ -26,7 +26,7 @@ abstract class RESTController extends Controller
         $record = new static::$model;
         # TODO: unique checks
         if ($record->validate() && $record->save()) {
-            $response = $record;
+            $response = response($record, 201);  # TODO: add Location header
         } else {
             $response = [
                 'errors' => $record->errors()->all()
@@ -50,13 +50,10 @@ abstract class RESTController extends Controller
         $model = static::$model;
         $record = $model::find($id);
         if ($record === null) {
-            $response = [
-                'errors' => 'Not found',
-                'status' => 404
-            ];
+            abort(404);
         } else {
             $record->delete();
-            $response = $record;
+            $response = response('', 204);
         }
         return $response;
     }
@@ -89,10 +86,7 @@ abstract class RESTController extends Controller
         $model  = static::$model;
         $record = $model::find($id);
         if ($record === null) {
-            $response = [
-                'errors' => 'Not found',
-                'status' => 404
-            ];
+            abort(404);
         } else {
             $response = $record;
         }
@@ -141,10 +135,7 @@ abstract class RESTController extends Controller
         $model = static::$model;
         $record = $model::find($id);
         if ($record === null) {
-            $response = [
-                'errors' => 'Not found',
-                'status' => 404
-            ];
+            abort(404);
         # TODO: unique checks
     } elseif ($record->validate() && $record->update()) {
             $response = $record;
