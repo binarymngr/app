@@ -17,10 +17,13 @@ final class BinaryVersionController extends RESTController
     public function create(Request $rqst)
     {
         $binary = Binary::find($rqst->input('binary_id'));
-        if ($binary !== null && $binary->isVisibleToUser(Auth::user())) {
-            return parent::create($rqst);
+        if ($binary === null) {
+            abort(404, 'Parent binary not found.');
         }
-        return abort(401);
+        if (!$binary->isVisibleToUser(Auth::user())) {
+            abort(401);
+        }
+        return parent::create($rqst);
     }
 
     /**

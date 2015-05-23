@@ -27,4 +27,9 @@ final class BinaryCategory extends Ardent
         $this->binaries()->detach();
         return parent::delete();
     }
+
+    public function hasBinaries()
+    {
+        return !$this->binaries->isEmpty();
+    }
 }

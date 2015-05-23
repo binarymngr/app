@@ -13,9 +13,9 @@ final class UnauthorizedIfNotVisibleToUser
     {
         $user = Auth::user();
         $response = $next($rqst);
-        if (!method_exists($response->original, 'isVisibleToUser') || $response->original->isVisibleToUser($user)) {
-            return $response;
+        if (method_exists($response->original, 'isVisibleToUser') && !$response->original->isVisibleToUser($user)) {
+            abort(401);
         }
-        return abort(401);
+        return $response;
     }
 }

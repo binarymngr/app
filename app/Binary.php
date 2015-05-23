@@ -46,6 +46,28 @@ final class Binary extends Ardent
         return $binaries;
     }
 
+    public function hasCategories()
+    {
+        return !$this->categories->isEmpty();
+    }
+
+    public function hasVersions()
+    {
+        return !$this->versions->isEmpty();
+    }
+
+    public function isInstalled()
+    {
+        $installed = false;
+        $this->versions->each(function($version) use ($installed) {
+            if ($version->isInstalled()) {
+                $installed = true;
+                break;
+            }
+        });
+        return $installed;
+    }
+
     public function isVisibleToUser(User $user)
     {
         return $user->isAdmin() || $user->id === $this->owner_id;

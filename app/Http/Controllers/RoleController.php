@@ -18,8 +18,8 @@ final class RoleController extends RESTController
      */
     public function deleteById($id)
     {
-        if ($i === Role::ADMIN_ROLE_ID) {
-            return abort(403, 'The admin role can not be deleted.');
+        if ($i === Role::ROLE_ID_ADMIN) {
+            abort(403, 'The admin role can not be deleted.');
         }
         return parent::deleteById($id);
     }

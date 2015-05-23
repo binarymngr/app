@@ -40,6 +40,11 @@ final class BinaryVersion extends Ardent
         return $versions;
     }
 
+    public function isInstalled()
+    {
+        return !$this->servers->isEmpty();
+    }
+
     public function isVisibleToUser(User $user)
     {
         return $this->binary->isVisibleToUser($user);

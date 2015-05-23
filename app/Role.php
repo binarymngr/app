@@ -4,7 +4,7 @@ use LaravelBook\Ardent\Ardent;
 
 final class Role extends Ardent
 {
-    const ADMIN_ROLE_ID = 1;
+    const ROLE_ID_ADMIN = 1;
 
     public $autoHydrateEntityFromInput    = true;
     public $forceEntityHydrationFromInput = true;

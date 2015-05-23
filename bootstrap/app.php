@@ -66,9 +66,9 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    'forceLoggedIn'       => 'App\Http\Middleware\RedirectLoginIfNotLoggedIn',
-    'forceAdminRole'      => 'App\Http\Middleware\UnauthorizedIfNotAdmin',
-    'forceVisibleToUser'  => 'App\Http\Middleware\UnauthorizedIfNotVisibleToUser',
+    'forceLoggedIn'      => 'App\Http\Middleware\RedirectLoginIfNotLoggedIn',
+    'forceAdminRole'     => 'App\Http\Middleware\UnauthorizedIfNotAdmin',
+    'forceVisibleToUser' => 'App\Http\Middleware\UnauthorizedIfNotVisibleToUser',
 ]);
 
 /*

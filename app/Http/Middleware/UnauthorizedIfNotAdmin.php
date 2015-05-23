@@ -11,9 +11,9 @@ final class UnauthorizedIfNotAdmin
      */
     public function handle(Request $rqst, Closure $next)
     {
-        if (Auth::check() && Auth::user()->isAdmin()) {
-            return $next($rqst);
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
+            abort(401);
         }
-        return abort(401);
+        return $next($rqst);
     }
 }

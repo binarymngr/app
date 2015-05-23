@@ -29,6 +29,11 @@ final class Server extends Ardent
         return parent::delete();
     }
 
+    public function hasBinaries()
+    {
+        return !$this->binaries->isEmpty();
+    }
+
     public static function getAllVisibleToUser(User $user)
     {
         $servers = null;

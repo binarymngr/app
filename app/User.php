@@ -37,8 +37,18 @@ final class User extends Ardent implements AuthenticatableContract, CanResetPass
         return parent::delete();
     }
 
+    public function hasBinaries()
+    {
+        return !$this->binaries->isEmpty();
+    }
+
+    public function hasServers()
+    {
+        return !$this->servers->isEmpty();
+    }
+
     public function isAdmin()
     {
-        return $this->roles->contains(Role::ADMIN_ROLE_ID);
+        return $this->roles->contains(Role::ROLE_ID_ADMIN);
     }
 }

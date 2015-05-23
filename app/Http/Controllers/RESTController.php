@@ -137,8 +137,8 @@ abstract class RESTController extends Controller
         if ($record === null) {
             abort(404);
         # TODO: unique checks
-    } elseif ($record->validate() && $record->update()) {
-            $response = $record;
+        } elseif ($record->validate() && $record->update()) {
+                $response = $record;
         } else {
             $response = [
                 'errors' => $record->errors()->all()
