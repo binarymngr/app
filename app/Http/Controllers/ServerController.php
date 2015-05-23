@@ -12,7 +12,12 @@ final class ServerController extends RESTController
 
     public function __construct()
     {
-        $this->middleware('forceVisibleToUser', ['only' => 'getById']);
+        $this->middleware('forceVisibleToUser', ['only' => [
+            'deleteById',
+            // 'getAll',
+            'getById',
+            // 'putById'
+        ]]);
     }
 
     /**

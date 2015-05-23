@@ -11,6 +11,18 @@ final class BinaryVersionController extends RESTController
     protected static $model = 'App\BinaryVersion';
 
 
+    public function __construct()
+    {
+        $this->middleware('forceVisibleToUser', ['only' => [
+            // 'create',
+            // 'deleteById',
+            // 'getAll',
+            'getById',
+            // 'putById'
+        ]]);
+    }
+
+
     /**
      * @Override (to set check owner_id on binary)
      */

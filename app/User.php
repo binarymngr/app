@@ -5,6 +5,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Collection;
 use LaravelBook\Ardent\Ardent;
 
 final class User extends Ardent implements AuthenticatableContract, CanResetPasswordContract
@@ -37,6 +38,15 @@ final class User extends Ardent implements AuthenticatableContract, CanResetPass
         return parent::delete();
     }
 
+    public static function getAllVisibleToUser(User $user)
+    {
+        $users = User::all();
+        if (!$user->isAdmin()) {
+            $users = Collection::make($user);
+        }
+        return $users;
+    }
+
     public function hasBinaries()
     {
         return !$this->binaries->isEmpty();
@@ -50,5 +60,10 @@ final class User extends Ardent implements AuthenticatableContract, CanResetPass
     public function isAdmin()
     {
         return $this->roles->contains(Role::ROLE_ID_ADMIN);
+    }
+
+    public function isVisibleToUser(User $user)
+    {
+        return $user->isAdmin() || $user === $this;
     }
 }

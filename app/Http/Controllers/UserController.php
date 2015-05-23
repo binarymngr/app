@@ -10,6 +10,22 @@ final class UserController extends RESTController
 
     public function __construct()
     {
-        $this->middleware('forceAdminRole');
+        $this->middleware('forceAdminRole', ['only' => [
+            'create',
+            'deleteById'
+        ]]);
+        $this->middleware('forceVisibleToUser', ['only' => [
+            // 'getAll',
+            'getById',
+            'putById'
+        ]]);
+    }
+
+    /**
+     * @Override (to only return the user's own record)
+     */
+    public function getAll()
+    {
+        return User::getAllVisibleToUser(Auth::user());
     }
 }

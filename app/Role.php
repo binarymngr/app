@@ -26,4 +26,20 @@ final class Role extends Ardent
         $this->users()->detach();
         return parent::delete();
     }
+
+    public static function getAllVisibleToUser(User $user)
+    {
+        $roles = Role::all();
+        if (!$user->isAdmin()) {
+            $roles = $roles->reject(function($role) use ($user) {
+                return !$role->isVisibleToUser($user);
+            })->flatten();
+        }
+        return $roles;
+    }
+
+    public function isVisibleToUser(User $user)
+    {
+        return $user->isAdmin() || $this->users->has($user);
+    }
 }

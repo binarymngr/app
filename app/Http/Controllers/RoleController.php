@@ -10,7 +10,15 @@ final class RoleController extends RESTController
 
     public function __construct()
     {
-        $this->middleware('forceAdminRole');
+        $this->middleware('forceAdminRole', ['only' => [
+            'create',
+            'deleteById',
+            'putById'
+        ]]);
+        $this->middleware('forceVisibleToUser', ['only' => [
+            // 'getAll',
+            'getById'
+        ]]);
     }
 
     /**
@@ -22,5 +30,13 @@ final class RoleController extends RESTController
             abort(403, 'The admin role can not be deleted.');
         }
         return parent::deleteById($id);
+    }
+
+    /**
+     * @Override (to only return the user's own roles)
+     */
+    public function getAll()
+    {
+        return Role::getAllVisibleToUser(Auth::user());
     }
 }
