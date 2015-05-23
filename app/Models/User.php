@@ -29,12 +29,20 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     ];
 
 
+    /**
+     * @{inherit}
+     *
+     * @Override to detach the groups before deletion
+     */
     public function delete()
     {
         $this->roles()->detach();
         return parent::delete();
     }
 
+    /**
+     * @{inherit}
+     */
     public static function getAllVisibleToUser(User $user)
     {
         $users = User::all();
@@ -44,31 +52,55 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
         return $users;
     }
 
+    /**
+     * Checks if the user owns binaries.
+     *
+     * @return Bool true if the user owns at least one binary
+     */
     public function hasBinaries()
     {
         return !$this->binaries->isEmpty();
     }
 
+    /**
+     * Checks if the user owns servers.
+     *
+     * @return Bool true if the user owns at least one server
+     */
     public function hasServers()
     {
         return !$this->servers->isEmpty();
     }
 
+    /**
+     * Checks if the user is admin (has the admin role).
+     *
+     * @return Bool true if the user has the admin role
+     */
     public function isAdmin()
     {
         return $this->roles->contains(Role::ROLE_ID_ADMIN);
     }
 
+    /**
+     * @{inherit}
+     */
     public function isDeletableByUser(User $user)
     {
         return $user->isAdmin();
     }
 
+    /**
+     * @{inherit}
+     */
     public function isUpdatableByUser(User $user)
     {
         return $this->isVisibleToUser($user);
     }
 
+    /**
+     * @{inherit}
+     */
     public function isVisibleToUser(User $user)
     {
         return $user->isAdmin() || $user === $this;

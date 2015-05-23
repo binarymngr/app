@@ -26,7 +26,9 @@ final class RoleController extends RESTController
     }
 
     /**
-     * @Override (to prevent removing the admin role)
+     * @{inherit}
+     *
+     * @Override to prevent removing the admin role
      */
     public function deleteById($id)
     {

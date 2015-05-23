@@ -16,17 +16,32 @@ final class Server extends RESTModel
     ];
 
 
+    /**
+     * @{inherit}
+     *
+     * @Override to detach the binaries before deletion
+     */
     public function delete()
     {
         $this->binaries()->detach();
         return parent::delete();
     }
 
-    public function hasBinaries()
+    /**
+     * Checks if binaries are installed on this server.
+     *
+     * @return Bool true if at least one binary (version) is installed
+     */
+    public function hasBinariesInstalled()
     {
         return !$this->binaries->isEmpty();
     }
 
+    /**
+     * @{inherit}
+     *
+     * @Override to detach the groups before deletion
+     */
     public static function getAllVisibleToUser(User $user)
     {
         $servers = null;
@@ -40,16 +55,25 @@ final class Server extends RESTModel
         return $servers;
     }
 
+    /**
+     * @{inherit}
+     */
     public function isDeletableByUser(User $user)
     {
         return $this->isUpdatableByUser($user);
     }
 
+    /**
+     * @{inherit}
+     */
     public function isUpdatableByUser(User $user)
     {
         return $this->isVisibleToUser($user);
     }
 
+    /**
+     * @{inherit}
+     */
     public function isVisibleToUser(User $user)
     {
         return $user->isAdmin() || $user->id === $this->owner_id;

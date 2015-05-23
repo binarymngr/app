@@ -2,6 +2,7 @@
 
 use App\Http\Helpers\RestrictedUpdatable;
 use App\Http\Helpers\UserDependentGetAll;
+use App\Models\Role;
 use App\Models\User;
 use Auth;
 
@@ -22,5 +23,18 @@ final class UserController extends RESTController
         $this->middleware('forceVisibleToUser', ['only' => [
             'getById'
         ]]);
+    }
+
+    /**
+     * @{inherit}
+     *
+     * @Override to prevent deleting the last admin
+     */
+    public function deleteById($id)
+    {
+        if (Role::find(Role::ROLE_ID_ADMIN)->users->count() === 1) {
+            abort(403, 'Cannot delete the last admin user.');
+        }
+        return parent::deleteById($id);
     }
 }

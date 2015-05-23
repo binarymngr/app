@@ -5,6 +5,16 @@ use Illuminate\Http\Request;
 
 trait RestrictedUpdatable
 {
+    /**
+     * Updates the record with the given ID with the values from the request.
+     *
+     * Attn: This trait is meant to be used in \App\Controllers\RESTController s.
+     *
+     * @param \Illuminate\Http\Request $rqst the incoming request
+     * @param int                      $id   the ID of the record to update
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function putById(Request $rqst, $id)
     {
         $response = null;

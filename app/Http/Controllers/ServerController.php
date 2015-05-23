@@ -23,7 +23,9 @@ final class ServerController extends RESTController
     }
 
     /**
-     * @Override (to set owner_id)
+     * @{inherit}
+     *
+     * @Override to set owner_id to the request user
      */
     public function create(Request $rqst)
     {

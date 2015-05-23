@@ -2,6 +2,11 @@
 
 use Illuminate\Http\Request;
 
+/**
+ * Base class for all controllers offering a RESTful API.
+ *
+ * @abstract
+ */
 abstract class RESTController extends Controller
 {
     /**
@@ -15,9 +20,9 @@ abstract class RESTController extends Controller
     /**
      * Creates a new record with the data provided by the request body.
      *
-     * @method POST
+     * @param \Illuminate\Http\Request $rqst the incoming request
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function create(Request $rqst)
     {
@@ -40,11 +45,9 @@ abstract class RESTController extends Controller
     /**
      * Deletes the record with the given ID (if exists).
      *
-     * @method DELETE
+     * @param int $id the ID of the record to delete
      *
-     * @param int $id the record's ID
-     *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function deleteById($id)
     {
@@ -61,11 +64,9 @@ abstract class RESTController extends Controller
     }
 
     /**
-     * Returns an array of all records.
+     * Returns a collection of all records.
      *
-     * @method GET
-     *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function getAll()
     {
@@ -76,11 +77,9 @@ abstract class RESTController extends Controller
     /**
      * Returns the record with the given primary key ID.
      *
-     * @method GET
+     * @param int $id the primary key of the record to return
      *
-     * @param int $id the record to get
-     *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function getById($id)
     {
@@ -98,9 +97,7 @@ abstract class RESTController extends Controller
     /**
      * Returns a list of allowed HTTP methods on the requested resource.
      *
-     * @method OPTIONS
-     *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function optionsForAll()
     {
@@ -110,11 +107,9 @@ abstract class RESTController extends Controller
     /**
      * Returns a list of allowed HTTP methods on the requested resource.
      *
-     * @method OPTIONS
-     *
      * @param int $id the ID of the record to get the options for
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function optionsForId($id)
     {
@@ -124,12 +119,10 @@ abstract class RESTController extends Controller
     /**
      * Updates the record with the given ID with the values provided by the PUT request.
      *
-     * @method PUT
+     * @param \Illuminate\Http\Request $rqst the incoming request
+     * @param int                      $id   the ID of the record to update
      *
-     * @param Request $rqst the PUT request
-     * @param int     $id   the ID of the record to update
-     *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function putById(Request $rqst, $id)
     {

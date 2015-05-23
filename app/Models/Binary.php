@@ -17,6 +17,11 @@ final class Binary extends RESTModel
     ];
 
 
+    /**
+     * @{inherit}
+     *
+     * @Override to detach the categories and delete the versions
+     */
     public function delete()
     {
         $this->categories()->detach();
@@ -24,6 +29,9 @@ final class Binary extends RESTModel
         return parent::delete();
     }
 
+    /**
+     * @{inherit}
+     */
     public static function getAllVisibleToUser(User $user)
     {
         $binaries = null;
@@ -37,16 +45,31 @@ final class Binary extends RESTModel
         return $binaries;
     }
 
+    /**
+     * Checks if this binary is within a category.
+     *
+     * @return Bool true if at least one category is associated with this binary
+     */
     public function hasCategories()
     {
         return !$this->categories->isEmpty();
     }
 
+    /**
+     * Checks if versions have been added to this binary.
+     *
+     * @return Bool true if at least one version has been added
+     */
     public function hasVersions()
     {
         return !$this->versions->isEmpty();
     }
 
+    /**
+     * Checks if this binary is installed on a server.
+     *
+     * @return Bool true if at least one server has the binary installed
+     */
     public function isInstalled()
     {
         $installed = false;
@@ -59,16 +82,25 @@ final class Binary extends RESTModel
         return $installed;
     }
 
+    /**
+     * @{inherit}
+     */
     public function isDeletableByUser(User $user)
     {
         return $this->isUpdatableByUser($user);
     }
 
+    /**
+     * @{inherit}
+     */
     public function isUpdatableByUser(User $user)
     {
         return $this->isVisibleToUser($user);
     }
 
+    /**
+     * @{inherit}
+     */
     public function isVisibleToUser(User $user)
     {
         return $user->isAdmin() || $user->id === $this->owner_id;

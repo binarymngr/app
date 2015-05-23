@@ -2,6 +2,11 @@
 
 final class Role extends RESTModel
 {
+    /**
+     * Numeric ID of the admin role as it's stored in the DB.
+     *
+     * @var int
+     */
     const ROLE_ID_ADMIN = 1;
 
     protected $fillable = ['name', 'description'];
@@ -15,12 +20,20 @@ final class Role extends RESTModel
     ];
 
 
+    /**
+     * @{inherit}
+     *
+     * @Override to detach the users before deletion
+     */
     public function delete()
     {
         $this->users()->detach();
         return parent::delete();
     }
 
+    /**
+     * @{inherit}
+     */
     public static function getAllVisibleToUser(User $user)
     {
         $roles = Role::all();
@@ -32,16 +45,25 @@ final class Role extends RESTModel
         return $roles;
     }
 
+    /**
+     * @{inherit}
+     */
     public function isDeletableByUser(User $user)
     {
         return $user->isAdmin();
     }
 
+    /**
+     * @{inherit}
+     */
     public function isUpdatableByUser(User $user)
     {
         return $user->isAdmin();
     }
 
+    /**
+     * @{inherit}
+     */
     public function isVisibleToUser(User $user)
     {
         return $user->isAdmin() || $this->users->contains($user->id);

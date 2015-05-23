@@ -24,13 +24,15 @@ final class BinaryVersionController extends RESTController
     }
 
     /**
-     * @Override (to get the binary from the binary_id)
+     * @{inherit}
+     *
+     * @Override to get the binary from the binary_id
      */
     public function create(Request $rqst)
     {
         $binary = Binary::find($rqst->input('binary_id'));
         if ($binary === null) {
-            abort(404, 'Parent binary not found.');
+            abort(404, 'Binary not found.');
         }
         if (!$binary->isVisibleToUser(Auth::user())) {
             abort(401);

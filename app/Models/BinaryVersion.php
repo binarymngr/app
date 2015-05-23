@@ -17,12 +17,20 @@ final class BinaryVersion extends RESTModel
     ];
 
 
+    /**
+     * @{inherit}
+     *
+     * @Override to detach the servers before deletion
+     */
     public function delete()
     {
         $this->servers()->detach();
         return parent::delete();
     }
 
+    /**
+     * @{inherit}
+     */
     public static function getAllVisibleToUser(User $user)
     {
         $versions = BinaryVersion::all();
@@ -34,21 +42,35 @@ final class BinaryVersion extends RESTModel
         return $versions;
     }
 
+    /**
+     * Checks if this version is installed on a server.
+     *
+     * @return Bool true if at least one server has this version installed
+     */
     public function isInstalled()
     {
         return !$this->servers->isEmpty();
     }
 
+    /**
+     * @{inherit}
+     */
     public function isDeletableByUser(User $user)
     {
         return $this->isUpdatableByUser($user);
     }
 
+    /**
+     * @{inherit}
+     */
     public function isUpdatableByUser(User $user)
     {
         return $this->isVisibleToUser($user);
     }
 
+    /**
+     * @{inherit}
+     */
     public function isVisibleToUser(User $user)
     {
         return $this->binary->isVisibleToUser($user);
