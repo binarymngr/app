@@ -1,20 +1,14 @@
-<?php namespace App;
+<?php namespace App\Models;
 
-use LaravelBook\Ardent\Ardent;
-
-final class Binary extends Ardent
+final class Binary extends RESTModel
 {
-    public $autoHydrateEntityFromInput    = true;
-    public $forceEntityHydrationFromInput = true;
-
-    protected $dates    = ['created_at', 'updated_at'];
     protected $fillable = ['name', 'description', 'homepage', 'owner_id'];
     protected $visible  = ['id', 'name', 'description', 'homepage', 'owner_id'];
 
     public static $relationsData = [
-        'categories' => [self::BELONGS_TO_MANY, 'App\BinaryCategory', 'table' => 'binaries_categories'],
-        'owner'      => [self::BELONGS_TO, 'App\User', 'foreignKey' => 'owner_id'],
-        'versions'   => [self::HAS_MANY, 'App\BinaryVersion'],
+        'categories' => [self::BELONGS_TO_MANY, 'App\Models\BinaryCategory', 'table' => 'binaries_categories'],
+        'owner'      => [self::BELONGS_TO, 'App\Models\User', 'foreignKey' => 'owner_id'],
+        'versions'   => [self::HAS_MANY, 'App\Models\BinaryVersion'],
     ];
     public static $rules = [
         'name'     => 'required|between:1,100',  # TODO: unique:binaries,name
@@ -23,9 +17,6 @@ final class Binary extends Ardent
     ];
 
 
-    /**
-     * @Override (to detach relations)
-     */
     public function delete()
     {
         $this->categories()->detach();
@@ -66,6 +57,16 @@ final class Binary extends Ardent
             }
         });
         return $installed;
+    }
+
+    public function isDeletableByUser(User $user)
+    {
+        return $this->isUpdatableByUser($user);
+    }
+
+    public function isUpdatableByUser(User $user)
+    {
+        return $this->isVisibleToUser($user);
     }
 
     public function isVisibleToUser(User $user)

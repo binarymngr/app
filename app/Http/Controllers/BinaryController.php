@@ -1,22 +1,25 @@
 <?php namespace App\Http\Controllers;
 
-use App\Binary;
+use App\Http\Helpers\RestrictedDeletable;
+use App\Http\Helpers\RestrictedUpdatable;
+use App\Http\Helpers\UserDependentGetAll;
 use App\Http\Controllers\RESTController;
+use App\Models\Binary;
 use Auth;
 use Illuminate\Http\Request;
 
 final class BinaryController extends RESTController
 {
-    protected static $model = 'App\Binary';
+    use RestrictedDeletable, RestrictedUpdatable, UserDependentGetAll;
+
+
+    protected static $model = 'App\Models\Binary';
 
 
     public function __construct()
     {
         $this->middleware('forceVisibleToUser', ['only' => [
-            'deleteById',
-            // 'getAll',
-            'getById',
-            // 'putById'
+            'getById'
         ]]);
     }
 
@@ -29,37 +32,5 @@ final class BinaryController extends RESTController
             'owner_id' => Auth::user()->id
         ]);
         return parent::create($rqst);
-    }
-
-    /**
-     * @Override (to only return the user's own servers)
-     */
-    public function getAll()
-    {
-        return Binary::getAllVisibleToUser(Auth::user());
-    }
-
-    /**
-     * @Override (to check if the operation is permited)
-     */
-    public function putById(Request $rqst, $id)
-    {
-        $response = null;
-        $user = Auth::user();
-        $binary = Binary::find($id);
-        if ($binary === null) {
-            abort(404, 'Binary not found.');
-        } elseif ($binary->isVisibleToUser($user)) {
-            if ($binary->validate() && $binary->update()) {
-                $response = $binary;
-            } else {
-                $response = [
-                    'errors' => $binary->errors()->all()
-                ];
-            }
-        } else {
-            abort(401);
-        }
-        return $response;
     }
 }

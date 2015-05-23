@@ -1,11 +1,16 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Controllers\RESTController;
-use App\Role;
+use App\Http\Helpers\UserDependentGetAll;
+use App\Models\Role;
+use Auth;
 
 final class RoleController extends RESTController
 {
-    protected static $model = 'App\Role';
+    use UserDependentGetAll;
+
+
+    protected static $model = 'App\Models\Role';
 
 
     public function __construct()
@@ -16,7 +21,6 @@ final class RoleController extends RESTController
             'putById'
         ]]);
         $this->middleware('forceVisibleToUser', ['only' => [
-            // 'getAll',
             'getById'
         ]]);
     }
@@ -26,17 +30,9 @@ final class RoleController extends RESTController
      */
     public function deleteById($id)
     {
-        if ($i === Role::ROLE_ID_ADMIN) {
+        if ($id === Role::ROLE_ID_ADMIN) {
             abort(403, 'The admin role can not be deleted.');
         }
         return parent::deleteById($id);
-    }
-
-    /**
-     * @Override (to only return the user's own roles)
-     */
-    public function getAll()
-    {
-        return Role::getAllVisibleToUser(Auth::user());
     }
 }

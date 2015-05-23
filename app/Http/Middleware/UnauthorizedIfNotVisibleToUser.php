@@ -8,8 +8,6 @@ final class UnauthorizedIfNotVisibleToUser
 {
     /**
      * @{inherit}
-     *
-     * TODO: does that work for DELETE/PUT methods? because it is AfterMiddleware
      */
     public function handle(Request $rqst, Closure $next)
     {

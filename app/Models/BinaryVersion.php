@@ -1,26 +1,20 @@
-<?php namespace App;
+<?php namespace App\Models;
 
-use LaravelBook\Ardent\Ardent;
-
-final class BinaryVersion extends Ardent
+final class BinaryVersion extends RESTModel
 {
-    public $autoHydrateEntityFromInput    = true;
-    public $forceEntityHydrationFromInput = true;
-
     protected $dates    = ['eol', 'created_at', 'updated_at'];
     protected $fillable = ['identifier', 'note', 'eol', 'binary_id'];
     protected $visible  = ['id', 'identifier', 'note', 'eol', 'binary_id'];
 
     public static $relationsData = [
-        'binary'  => [self::BELONGS_TO, 'App\Binary', 'table' => 'binaries'],
-        'servers' => [self::BELONGS_TO_MANY, 'App\Server', 'table' => 'servers_binary_versions']
+        'binary'  => [self::BELONGS_TO, 'App\Models\Binary', 'table' => 'binaries'],
+        'servers' => [self::BELONGS_TO_MANY, 'App\Models\Server', 'table' => 'servers_binary_versions']
     ];
     public static $rules = [
         'identifier' => 'required|between:1,64',
         'eol'        => 'date',
         'binary_id'  => 'required|exists:binaries,id|integer'
     ];
-
 
 
     public function delete()
@@ -43,6 +37,16 @@ final class BinaryVersion extends Ardent
     public function isInstalled()
     {
         return !$this->servers->isEmpty();
+    }
+
+    public function isDeletableByUser(User $user)
+    {
+        return $this->isUpdatableByUser($user);
+    }
+
+    public function isUpdatableByUser(User $user)
+    {
+        return $this->isVisibleToUser($user);
     }
 
     public function isVisibleToUser(User $user)

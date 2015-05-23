@@ -1,11 +1,16 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Controllers\RESTController;
-use App\User;
+use App\Http\Helpers\RestrictedUpdatable;
+use App\Http\Helpers\UserDependentGetAll;
+use App\Models\User;
+use Auth;
 
 final class UserController extends RESTController
 {
-    protected static $model = 'App\User';
+    use RestrictedUpdatable, UserDependentGetAll;
+
+
+    protected static $model = 'App\Models\User';
 
 
     public function __construct()
@@ -15,17 +20,7 @@ final class UserController extends RESTController
             'deleteById'
         ]]);
         $this->middleware('forceVisibleToUser', ['only' => [
-            // 'getAll',
-            'getById',
-            'putById'
+            'getById'
         ]]);
-    }
-
-    /**
-     * @Override (to only return the user's own record)
-     */
-    public function getAll()
-    {
-        return User::getAllVisibleToUser(Auth::user());
     }
 }

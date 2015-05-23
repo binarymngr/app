@@ -1,6 +1,5 @@
-<?php namespace App;
+<?php namespace App\Models;
 
-use App\Role;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -8,23 +7,21 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Collection;
 use LaravelBook\Ardent\Ardent;
 
-final class User extends Ardent implements AuthenticatableContract, CanResetPasswordContract
+final class User extends RESTModel implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword;
 
-    public $autoHashPasswordAttributes    = true;
-    public $autoHydrateEntityFromInput    = true;
-    public $forceEntityHydrationFromInput = true;
 
-    protected $dates    = ['created_at', 'updated_at'];
+    public $autoHashPasswordAttributes    = true;
+
     protected $fillable = ['email', 'password'];
     protected $visible  = ['id', 'email'];
 
     public static $passwordAttributes = ['password'];
     public static $relationsData      = [
-        'binaries' => [self::HAS_MANY, 'App\Binary'],
-        'roles'    => [self::BELONGS_TO_MANY, 'App\Role', 'table' => 'users_roles'],
-        'servers'  => [self::HAS_MANY, 'App\Server'],
+        'binaries' => [self::HAS_MANY, 'App\Models\Binary'],
+        'roles'    => [self::BELONGS_TO_MANY, 'App\Models\Role', 'table' => 'users_roles'],
+        'servers'  => [self::HAS_MANY, 'App\Models\Server'],
     ];
     public static $rules = [
         'email'    => 'required|email',  # TODO: unique:users,email
@@ -60,6 +57,16 @@ final class User extends Ardent implements AuthenticatableContract, CanResetPass
     public function isAdmin()
     {
         return $this->roles->contains(Role::ROLE_ID_ADMIN);
+    }
+
+    public function isDeletableByUser(User $user)
+    {
+        return $user->isAdmin();
+    }
+
+    public function isUpdatableByUser(User $user)
+    {
+        return $this->isVisibleToUser($user);
     }
 
     public function isVisibleToUser(User $user)

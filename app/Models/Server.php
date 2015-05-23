@@ -1,20 +1,13 @@
-<?php namespace App;
+<?php namespace App\Models;
 
-use App\User;
-use LaravelBook\Ardent\Ardent;
-
-final class Server extends Ardent
+final class Server extends RESTModel
 {
-    public $autoHydrateEntityFromInput    = true;
-    public $forceEntityHydrationFromInput = true;
-
-    protected $dates     = ['created_at', 'updated_at'];
-    protected $fillable  = ['name', 'ipv4', 'owner_id'];
-    protected $visible   = ['id', 'name', 'ipv4', 'owner_id'];
+    protected $fillable = ['name', 'ipv4', 'owner_id'];
+    protected $visible  = ['id', 'name', 'ipv4', 'owner_id'];
 
     public static $relationsData = [
-        'binaries' => [self::BELONGS_TO_MANY, 'App\BinaryVersion', 'table' => 'servers_binary_versions'],
-        'owner'    => [self::BELONGS_TO, 'App\User', 'foreignKey' => 'owner_id']
+        'binaries' => [self::BELONGS_TO_MANY, 'App\Models\BinaryVersion', 'table' => 'servers_binary_versions'],
+        'owner'    => [self::BELONGS_TO, 'App\Models\User', 'foreignKey' => 'owner_id']
     ];
     public static $rules = [
         'name'     => 'required|between:1,75',  # TODO: unique:servers,name
@@ -45,6 +38,16 @@ final class Server extends Ardent
             )->get();
         }
         return $servers;
+    }
+
+    public function isDeletableByUser(User $user)
+    {
+        return $this->isUpdatableByUser($user);
+    }
+
+    public function isUpdatableByUser(User $user)
+    {
+        return $this->isVisibleToUser($user);
     }
 
     public function isVisibleToUser(User $user)

@@ -1,30 +1,30 @@
 <?php namespace App\Http\Controllers;
 
-use App\Binary;
-use App\BinaryVersion;
-use App\Http\Controllers\RESTController;
+use App\Http\Helpers\RestrictedDeletable;
+use App\Http\Helpers\RestrictedUpdatable;
+use App\Http\Helpers\UserDependentGetAll;
+use App\Models\Binary;
+use App\Models\BinaryVersion;
 use Auth;
 use Illuminate\Http\Request;
 
 final class BinaryVersionController extends RESTController
 {
-    protected static $model = 'App\BinaryVersion';
+    use RestrictedDeletable, RestrictedUpdatable, UserDependentGetAll;
+
+
+    protected static $model = 'App\Models\BinaryVersion';
 
 
     public function __construct()
     {
         $this->middleware('forceVisibleToUser', ['only' => [
-            // 'create',
-            // 'deleteById',
-            // 'getAll',
-            'getById',
-            // 'putById'
+            'getById'
         ]]);
     }
 
-
     /**
-     * @Override (to set check owner_id on binary)
+     * @Override (to get the binary from the binary_id)
      */
     public function create(Request $rqst)
     {
@@ -36,37 +36,5 @@ final class BinaryVersionController extends RESTController
             abort(401);
         }
         return parent::create($rqst);
-    }
-
-    /**
-     * @Override (to only return the versions of binaries the user owns)
-     */
-    public function getAll()
-    {
-        return BinaryVersion::getAllVisibleToUser(Auth::user());
-    }
-
-    /**
-     * @Override (to check if the operation is permited)
-     */
-    public function putById(Request $rqst, $id)
-    {
-        $response = null;
-        $user = Auth::user();
-        $version = BinaryVersion::find($id);
-        if ($version === null) {
-            abort(404, 'Binary version not found.');
-        } elseif ($version->isVisibleToUser($user)) {
-            if ($version->validate() && $version->update()) {
-                $response = $version;
-            } else {
-                $response = [
-                    'errors' => $version->errors()->all()
-                ];
-            }
-        } else {
-            abort(401);
-        }
-        return $response;
     }
 }

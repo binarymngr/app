@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 abstract class RESTController extends Controller
@@ -26,7 +25,10 @@ abstract class RESTController extends Controller
         $record = new static::$model;
         # TODO: unique checks
         if ($record->validate() && $record->save()) {
-            $response = response($record, 201);  # TODO: add Location header
+            $response = response($record, 201);
+            $response->header('Location', url($rqst->url().'/:id', [
+                'id' => $record->id
+            ]));
         } else {
             $response = [
                 'errors' => $record->errors()->all()
@@ -83,7 +85,7 @@ abstract class RESTController extends Controller
     public function getById($id)
     {
         $response = null;
-        $model  = static::$model;
+        $model = static::$model;
         $record = $model::find($id);
         if ($record === null) {
             abort(404);
@@ -138,7 +140,7 @@ abstract class RESTController extends Controller
             abort(404);
         # TODO: unique checks
         } elseif ($record->validate() && $record->update()) {
-                $response = $record;
+            $response = $record;
         } else {
             $response = [
                 'errors' => $record->errors()->all()
