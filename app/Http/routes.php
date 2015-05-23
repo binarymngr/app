@@ -116,13 +116,16 @@ $app->group(['middleware' => 'forceLoggedIn'], function($app)
      if (Auth::attempt($rqst->only('email', 'password'), $remember)) {
          return redirect()->route('dashboard');
      }
-     return redirect()->route('login')->with('login_failed', true)->with('email', $rqst->input('email'));
+     return redirect()->route('login')
+                      ->with('login_failed', true)
+                      ->with('email', $rqst->input('email'));
  });
 
  $app->get('auth/logout', ['as' => 'logout', function(Request $rqst) {
      if (Auth::check()) {
          Auth::logout();
-         return redirect()->route('login')->with('logged_out', true);
+         return redirect()->route('login')
+                          ->with('logged_out', true);
      }
      return redirect()->route('login');
  }]);
