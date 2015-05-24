@@ -94,7 +94,7 @@ $app->group(['middleware' => 'forceLoggedIn'], function($app)
      */
     $app->get('/', ['as' => 'dashboard', function() {
         if (view()->exists('app')) {
-            return view('app');
+            return view('app')->with('user', Auth::user());
         }
         return 'Application view not found. Make sure "resources/views/app.php" exists.';
     }]);
