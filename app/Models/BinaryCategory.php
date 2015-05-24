@@ -47,7 +47,7 @@ final class BinaryCategory extends RESTModel
      */
     public function isDeletableByUser(User $user)
     {
-        return $this->isAdmin();
+        return $user->isAdmin();
     }
 
     /**
