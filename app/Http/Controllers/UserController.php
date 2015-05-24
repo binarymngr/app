@@ -32,7 +32,11 @@ final class UserController extends RESTController
      */
     public function deleteById($id)
     {
-        if (Role::find(Role::ROLE_ID_ADMIN)->users->count() === 1) {
+        $user = User::find($id);
+        if ($user === null) {
+            abort(404, 'User not found.');
+        }
+        if ($user->isAdmin() && Role::find(Role::ROLE_ID_ADMIN)->users->count() === 1) {
             abort(403, 'Cannot delete the last admin user.');
         }
         return parent::deleteById($id);
