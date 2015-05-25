@@ -9,8 +9,9 @@ final class Role extends RESTModel
      */
     const ROLE_ID_ADMIN = 1;
 
+    protected $appends  = ['user_ids'];
     protected $fillable = ['name', 'description'];
-    protected $visible  = ['id', 'name', 'description'];
+    protected $visible  = ['id', 'name', 'description', 'user_ids'];
 
     public static $relationsData = [
         'users' => [self::BELONGS_TO_MANY, 'App\Models\User', 'table' => 'users_roles']
@@ -43,6 +44,32 @@ final class Role extends RESTModel
             })->flatten();
         }
         return $roles;
+    }
+
+    /**
+     * Accessor for the virtual 'user_ids' attribute.
+     *
+     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
+     *
+     * @return array an array containing the user IDs
+     */
+    public function getUserIdsAttribute()
+    {
+        $user_ids = [];
+        foreach ($this->users as $user) {
+            $user_ids[] = $user->id;
+        }
+        return $user_ids;
+    }
+
+    /**
+     * Checks if this role has users belonging to it.
+     *
+     * @return bool true if at least one user has this role
+     */
+    public function hasUsers()
+    {
+        return !$this->users->isEmpty();
     }
 
     /**

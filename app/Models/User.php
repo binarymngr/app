@@ -14,14 +14,15 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
 
     public $autoHashPasswordAttributes    = true;
 
+    protected $appends  = ['binary_ids', 'role_ids', 'server_ids'];
     protected $fillable = ['email', 'password'];
-    protected $visible  = ['id', 'email'];
+    protected $visible  = ['id', 'email', 'binary_ids', 'role_ids', 'server_ids'];
 
     public static $passwordAttributes = ['password'];
     public static $relationsData      = [
-        'binaries' => [self::HAS_MANY, 'App\Models\Binary'],
+        'binaries' => [self::HAS_MANY, 'App\Models\Binary', 'foreignKey' => 'owner_id'],
         'roles'    => [self::BELONGS_TO_MANY, 'App\Models\Role', 'table' => 'users_roles'],
-        'servers'  => [self::HAS_MANY, 'App\Models\Server'],
+        'servers'  => [self::HAS_MANY, 'App\Models\Server', 'foreignKey' => 'owner_id'],
     ];
     public static $rules = [
         'email'    => 'required|email',  # TODO: unique:users,email
@@ -53,23 +54,61 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     }
 
     /**
-     * Checks if the user owns binaries.
+     * Accessor for the virtual 'binary_ids' attribute.
      *
-     * @return Bool true if the user owns at least one binary
+     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
+     *
+     * @return array an array containing the binary IDs
      */
-    public function hasBinaries()
+    public function getBinaryIdsAttribute()
     {
-        return !$this->binaries->isEmpty();
+        $binary_ids = [];
+        foreach ($this->binaries as $binary) {
+            $binary_ids[] = $binary->id;
+        }
+        return $binary_ids;
     }
 
     /**
-     * Checks if the user owns servers.
+     * Accessor for the virtual 'role_ids' attribute.
      *
-     * @return Bool true if the user owns at least one server
+     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
+     *
+     * @return array an array containing the role IDs
      */
-    public function hasServers()
+    public function getRoleIdsAttribute()
     {
-        return !$this->servers->isEmpty();
+        $role_ids = [];
+        foreach ($this->roles as $role) {
+            $role_ids[] = $role->id;
+        }
+        return $role_ids;
+    }
+
+    /**
+     * Accessor for the virtual 'server_ids' attribute.
+     *
+     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
+     *
+     * @return array an array containing the server IDs
+     */
+    public function getServerIdsAttribute()
+    {
+        $server_ids = [];
+        foreach ($this->servers as $server) {
+            $server_ids[] = $server->id;
+        }
+        return $server_ids;
+    }
+
+    /**
+     * Checks if the belongs to at least one role.
+     *
+     * @return Bool true if the user belongs to at least one role
+     */
+    public function hasRoles()
+    {
+        return !$this->roles->isEmpty();
     }
 
     /**
@@ -104,5 +143,25 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     public function isVisibleToUser(User $user)
     {
         return $user->isAdmin() || $user === $this;
+    }
+
+    /**
+     * Checks if the user owns binaries.
+     *
+     * @return Bool true if the user owns at least one binary
+     */
+    public function ownsBinaries()
+    {
+        return !$this->binaries->isEmpty();
+    }
+
+    /**
+     * Checks if the user owns servers.
+     *
+     * @return Bool true if the user owns at least one server
+     */
+    public function ownsServers()
+    {
+        return !$this->servers->isEmpty();
     }
 }

@@ -2,8 +2,9 @@
 
 final class BinaryCategory extends RESTModel
 {
+    protected $appends  = ['binary_ids'];
     protected $fillable = ['name', 'description'];
-    protected $visible  = ['id', 'name', 'description'];
+    protected $visible  = ['id', 'name', 'description', 'binary_ids'];
 
     public static $relationsData = [
         'binaries' => [self::BELONGS_TO_MANY, 'App\Models\Binary', 'table' => 'binaries_categories']
@@ -30,6 +31,22 @@ final class BinaryCategory extends RESTModel
     public static function getAllVisibleToUser(User $user)
     {
         return BinaryCategory::all();
+    }
+
+    /**
+     * Accessor for the virtual 'binary_ids' attribute.
+     *
+     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
+     *
+     * @return array an array containing the binary IDs
+     */
+    public function getBinaryIdsAttribute()
+    {
+        $binary_ids = [];
+        foreach ($this->binaries as $binary) {
+            $binary_ids[] = $binary->id;
+        }
+        return $binary_ids;
     }
 
     /**

@@ -2,9 +2,10 @@
 
 final class BinaryVersion extends RESTModel
 {
+    protected $appends  = ['server_ids'];
     protected $dates    = ['eol', 'created_at', 'updated_at'];
     protected $fillable = ['identifier', 'note', 'eol', 'binary_id'];
-    protected $visible  = ['id', 'identifier', 'note', 'eol', 'binary_id'];
+    protected $visible  = ['id', 'identifier', 'note', 'eol', 'binary_id', 'server_ids'];
 
     public static $relationsData = [
         'binary'  => [self::BELONGS_TO, 'App\Models\Binary', 'table' => 'binaries'],
@@ -40,6 +41,22 @@ final class BinaryVersion extends RESTModel
             })->flatten();
         }
         return $versions;
+    }
+
+    /**
+     * Accessor for the virtual 'server_ids' attribute.
+     *
+     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
+     *
+     * @return array an array containing the server IDs
+     */
+    public function getServerIdsAttribute()
+    {
+        $server_ids = [];
+        foreach ($this->servers as $server) {
+            $server_ids[] = $server->id;
+        }
+        return $server_ids;
     }
 
     /**

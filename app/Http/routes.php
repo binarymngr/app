@@ -89,6 +89,7 @@ $app->group(['middleware' => 'forceLoggedIn'], function($app)
     $app->options('users',      'App\Http\Controllers\UserController@optionsForAll');
     $app->post   ('users',      'App\Http\Controllers\UserController@create');
 
+
     /*
      | Generics
      */
@@ -112,7 +113,7 @@ $app->group(['middleware' => 'forceLoggedIn'], function($app)
  }]);
 
  $app->post('auth/login', function(Request $rqst) {
-     $remember = $rqst->input('remember') === 'on' ? true : false;
+     $remember = $rqst->input('remember') === 'on';
      if (Auth::attempt($rqst->only('email', 'password'), $remember)) {
          return redirect()->route('dashboard');
      }

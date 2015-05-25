@@ -2,12 +2,13 @@
 
 final class Server extends RESTModel
 {
+    protected $appends  = ['binary_version_ids'];
     protected $fillable = ['name', 'ipv4', 'owner_id'];
-    protected $visible  = ['id', 'name', 'ipv4', 'owner_id'];
+    protected $visible  = ['id', 'name', 'ipv4', 'owner_id', 'binary_version_ids'];
 
     public static $relationsData = [
-        'binaries' => [self::BELONGS_TO_MANY, 'App\Models\BinaryVersion', 'table' => 'servers_binary_versions'],
-        'owner'    => [self::BELONGS_TO, 'App\Models\User', 'foreignKey' => 'owner_id']
+        'binary_versions' => [self::BELONGS_TO_MANY, 'App\Models\BinaryVersion', 'table' => 'servers_binary_versions'],
+        'owner'           => [self::BELONGS_TO, 'App\Models\User', 'foreignKey' => 'owner_id']
     ];
     public static $rules = [
         'name'     => 'required|between:1,75',  # TODO: unique:servers,name
@@ -23,7 +24,7 @@ final class Server extends RESTModel
      */
     public function delete()
     {
-        $this->binaries()->detach();
+        $this->binary_versions()->detach();
         return parent::delete();
     }
 
@@ -34,7 +35,7 @@ final class Server extends RESTModel
      */
     public function hasBinariesInstalled()
     {
-        return !$this->binaries->isEmpty();
+        return !$this->binary_versions()->get()->isEmpty();  # FIXME: $this->binary_versions
     }
 
     /**
@@ -53,6 +54,22 @@ final class Server extends RESTModel
             )->get();
         }
         return $servers;
+    }
+
+    /**
+     * Accessor for the virtual 'binary_ids' attribute.
+     *
+     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
+     *
+     * @return array an array containing the binary IDs
+     */
+    public function getBinaryVersionIdsAttribute()
+    {
+        $binary_version_ids = [];
+        foreach ($this->binary_versions()->get() as $binary_version) {  # FIXME: $this->binary_versions
+            $binary_version_ids[] = $binary_version->id;
+        }
+        return $binary_version_ids;
     }
 
     /**
