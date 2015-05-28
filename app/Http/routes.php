@@ -55,6 +55,14 @@ $app->group(['middleware' => 'forceLoggedIn'], function($app)
 
 
     /*
+     | Messages
+     */
+    $app->delete ('messages/{id}', 'App\Http\Controllers\MessageController@deleteById');
+    $app->get    ('messages/{id}', 'App\Http\Controllers\MessageController@getById');
+    $app->get    ('messages', 'App\Http\Controllers\MessageController@getAll');
+
+
+    /*
      | Roles
      */
     $app->delete ('roles/{id}', 'App\Http\Controllers\RoleController@deleteById');
