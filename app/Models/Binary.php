@@ -63,6 +63,28 @@ final class Binary extends RESTModel
     }
 
     /**
+     * Returns the latest version record of this binary.
+     *
+     * @return \App\Models\BinaryVersion
+     */
+    public function getLatestVersion()
+    {
+        return $this->versions->reduce(function($version) {
+            return $version->isLatest();
+        });
+    }
+
+    /**
+     * Returns a collection of versions that are not the latest.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getOutdatedVersions()
+    {
+        return $this->binaries->reject();
+    }
+
+    /**
      * Accessor for the virtual 'version_ids' attribute.
      *
      * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
@@ -105,14 +127,12 @@ final class Binary extends RESTModel
      */
     public function isInstalled()
     {
-        $installed = false;
-        $this->versions->each(function($version) use ($installed) {
+        foreach ($this->versions as $version) {
             if ($version->isInstalled()) {
-                $installed = true;
-                break;
+                return true;
             }
-        });
-        return $installed;
+        }
+        return false;
     }
 
     /**

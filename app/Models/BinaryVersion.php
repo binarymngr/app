@@ -19,7 +19,6 @@ final class BinaryVersion extends RESTModel
         'binary_id'  => 'required|exists:binaries,id|integer'
     ];
 
-
     /**
      * @{inherit}
      *
@@ -62,6 +61,14 @@ final class BinaryVersion extends RESTModel
     }
 
     /**
+     * @{inherit}
+     */
+    public function isDeletableByUser(User $user)
+    {
+        return $this->isUpdatableByUser($user);
+    }
+
+    /**
      * Checks if this version is installed on a server.
      *
      * @return Bool true if at least one server has this version installed
@@ -72,11 +79,13 @@ final class BinaryVersion extends RESTModel
     }
 
     /**
-     * @{inherit}
+     *
      */
-    public function isDeletableByUser(User $user)
+    public function isLatest()
     {
-        return $this->isUpdatableByUser($user);
+        return BinaryVersion::where(
+            'identifier', '>', $this->identifier
+        )->get();
     }
 
     /**

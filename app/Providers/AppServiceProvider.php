@@ -12,6 +12,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // nothing to do
     }
 }
