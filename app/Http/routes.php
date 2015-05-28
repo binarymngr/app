@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -105,28 +103,10 @@ $app->group(['middleware' => 'forceLoggedIn'], function($app)
 /*
  | Authentication
  */
- $app->get('auth/login', ['as' => 'login', function() {
-     if (Auth::check()) {
-         return redirect()->route('dashboard');
-     }
-     return view('auth.login');
- }]);
-
- $app->post('auth/login', function(Request $rqst) {
-     $remember = $rqst->input('remember') === 'on';
-     if (Auth::attempt($rqst->only('email', 'password'), $remember)) {
-         return redirect()->route('dashboard');
-     }
-     return redirect()->route('login')
-                      ->with('login_failed', true)
-                      ->with('email', $rqst->input('email'));
- });
-
- $app->get('auth/logout', ['as' => 'logout', function(Request $rqst) {
-     if (Auth::check()) {
-         Auth::logout();
-         return redirect()->route('login')
-                          ->with('logged_out', true);
-     }
-     return redirect()->route('login');
- }]);
+ $app->get('auth/login', [
+    'as' => 'login', 'uses' => 'App\Http\Controllers\AuthenticationController@showLogin'
+]);
+$app->post('auth/login', 'App\Http\Controllers\AuthenticationController@login');
+$app->get('auth/logout', [
+    'as' => 'logout', 'uses' => 'App\Http\Controllers\AuthenticationController@logout'
+]);
