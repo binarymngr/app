@@ -21,6 +21,7 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     public static $passwordAttributes = ['password'];
     public static $relationsData      = [
         'binaries' => [self::HAS_MANY, 'App\Models\Binary', 'foreignKey' => 'owner_id'],
+        'messages' => [self::HAS_MANY, 'App\Models\Messages'],
         'roles'    => [self::BELONGS_TO_MANY, 'App\Models\Role', 'table' => 'users_roles'],
         'servers'  => [self::HAS_MANY, 'App\Models\Server', 'foreignKey' => 'owner_id'],
     ];
@@ -99,6 +100,16 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
             $server_ids[] = $server->id;
         }
         return $server_ids;
+    }
+
+    /**
+     * Checks if messages exist for this user.
+     *
+     * @return Bool true if a message for this user exists
+     */
+    public function hasMessages()
+    {
+        $this->messages->isEmpty();
     }
 
     /**

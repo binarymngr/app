@@ -39,6 +39,21 @@ final class Server extends RESTModel
     }
 
     /**
+     * Checks if this server has binaries installed that are not up-to-date.
+     *
+     * @return Bool true if at least one binary is not the latest version
+     */
+    public function hasOutdatedBinaryVersionsInstalled()
+    {
+        foreach ($this->binary_versions()->get() as $version) {  # FIXME: $this->binary_versions
+            if (!$version->isLatest()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @{inherit}
      *
      * @Override to detach the groups before deletion

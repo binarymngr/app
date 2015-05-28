@@ -82,7 +82,7 @@ $app->routeMiddleware([
 |
 */
 
-$app->register('App\Providers\BinaryVersionMessageProvider');
+$app->register('App\Providers\EventServiceProvider');
 
 /*
 |--------------------------------------------------------------------------
