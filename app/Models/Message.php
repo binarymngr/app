@@ -3,7 +3,7 @@
 final class Message extends RESTModel
 {
     protected $fillable = ['title', 'body'];
-    protected $visible  = ['id', 'title', 'body'];
+    protected $visible  = ['id', 'title', 'body', 'user_id'];
 
     public static $relationsData = [
         'user' => [self::BELONGS_TO, 'App\Models\User']

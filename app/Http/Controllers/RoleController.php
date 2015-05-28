@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Exceptions\DeletingProtectedRecordException;
 use App\Http\Helpers\UserDependentGetAll;
 use App\Models\Role;
 use Auth;
@@ -27,13 +28,14 @@ final class RoleController extends RESTController
     /**
      * @{inherit}
      *
-     * @Override to prevent removing the admin role
+     * @Override to catch exceptions for protected roles
      */
     public function deleteById($id)
     {
-        if ($id === Role::ROLE_ID_ADMIN) {
-            abort(403, 'The admin role can not be deleted.');
+        try {
+            return parent::deleteById($id);
+        } catch (DeletingProtectedRecordException $ex) {
+            abort(403, 'The given role is protected and can not be deleted.');
         }
-        return parent::deleteById($id);
     }
 }

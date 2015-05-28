@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Exceptions\DeletingProtectedRecordException;
 use App\Http\Helpers\RestrictedUpdatable;
 use App\Http\Helpers\UserDependentGetAll;
 use App\Models\Role;
@@ -57,18 +58,15 @@ final class UserController extends RESTController
     /**
      * @{inherit}
      *
-     * @Override to prevent deleting the last admin
+     * @Override to catch exceptions when the last admin user gets deleted
      */
     public function deleteById($id)
     {
-        $user = User::find($id);
-        if ($user === null) {
-            abort(404, 'User not found.');
-        }
-        if ($user->isAdmin() && Role::find(Role::ROLE_ID_ADMIN)->users->count() === 1) {
+        try {
+            return parent::deleteById($id);
+        } catch (DeletingProtectedRecordException $ex) {
             abort(403, 'Cannot delete the last admin user.');
         }
-        return parent::deleteById($id);
     }
 
     /**

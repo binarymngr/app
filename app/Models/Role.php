@@ -1,5 +1,8 @@
 <?php namespace App\Models;
 
+use App\Exceptions\DeletingProtectedRecordException;
+use Illuminate\Database\Eloquent\Collection;
+
 final class Role extends RESTModel
 {
     /**
@@ -23,13 +26,17 @@ final class Role extends RESTModel
 
     /**
      * @{inherit}
-     *
-     * @Override to detach the users before deletion
      */
-    public function delete()
+    public static function boot()
     {
-        $this->users()->detach();
-        return parent::delete();
+        parent::boot();
+        Role::deleting(function(Role $role)
+        {
+            if (Role::getProtectedRoles()->contains($role->id)) {
+                throw new DeletingProtectedRecordException($role, 'Cannot delete the protected role.');
+            }
+            $role->users()->detach();
+        });
     }
 
     /**
@@ -44,6 +51,18 @@ final class Role extends RESTModel
             })->flatten();
         }
         return $roles;
+    }
+
+    /**
+     * Returns a collection containing all roles protected from deletion.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getProtectedRoles()
+    {
+        return Collection::make([
+            Role::find(Role::ROLE_ID_ADMIN)
+        ]);
     }
 
     /**

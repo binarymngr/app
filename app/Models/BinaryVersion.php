@@ -1,7 +1,5 @@
 <?php namespace App\Models;
 
-use DateTime;
-
 final class BinaryVersion extends RESTModel
 {
     protected $appends  = ['server_ids'];
@@ -21,13 +19,14 @@ final class BinaryVersion extends RESTModel
 
     /**
      * @{inherit}
-     *
-     * @Override to detach the servers before deletion
      */
-    public function delete()
+    public static function boot()
     {
-        $this->servers()->detach();
-        return parent::delete();
+        parent::boot();
+        BinaryVersion::deleting(function(BinaryVersion $version)
+        {
+            $version->servers()->detach();
+        });
     }
 
     /**
@@ -79,13 +78,15 @@ final class BinaryVersion extends RESTModel
     }
 
     /**
+     * Checks if this version is the latest for the parent binary.
      *
+     * @return Bool true if no version with a greater (>) identifier exists.
      */
     public function isLatest()
     {
         return BinaryVersion::where(
             'identifier', '>', $this->identifier
-        )->get();
+        )->get()->isEmpty();
     }
 
     /**

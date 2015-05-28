@@ -1,27 +1,27 @@
 <?php namespace App\Models;
 
+use App\Exceptions\DeletingProtectedRecordException;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Collection;
-use LaravelBook\Ardent\Ardent;
 
 final class User extends RESTModel implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword;
 
 
-    public $autoHashPasswordAttributes    = true;
+    public $autoHashPasswordAttributes = true;
 
-    protected $appends  = ['binary_ids', 'role_ids', 'server_ids'];
+    protected $appends  = ['binary_ids', 'message_ids', 'role_ids', 'server_ids'];
     protected $fillable = ['email', 'password'];
-    protected $visible  = ['id', 'email', 'binary_ids', 'role_ids', 'server_ids'];
+    protected $visible  = ['id', 'email', 'binary_ids', 'message_ids', 'role_ids', 'server_ids'];
 
     public static $passwordAttributes = ['password'];
     public static $relationsData      = [
         'binaries' => [self::HAS_MANY, 'App\Models\Binary', 'foreignKey' => 'owner_id'],
-        'messages' => [self::HAS_MANY, 'App\Models\Messages'],
+        'messages' => [self::HAS_MANY, 'App\Models\Message'],
         'roles'    => [self::BELONGS_TO_MANY, 'App\Models\Role', 'table' => 'users_roles'],
         'servers'  => [self::HAS_MANY, 'App\Models\Server', 'foreignKey' => 'owner_id'],
     ];
@@ -36,7 +36,7 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
      *
      * @param \App\Models\Role $role the role to add
      *
-     * @return Void
+     * @return void
      */
     public function addRole(Role $role)
     {
@@ -45,13 +45,17 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
 
     /**
      * @{inherit}
-     *
-     * @Override to detach the groups before deletion
      */
-    public function delete()
+    public static function boot()
     {
-        $this->roles()->detach();
-        return parent::delete();
+        parent::boot();
+        User::deleting(function(User $user)
+        {
+            if ($user->isAdmin() && Role::find(Role::ROLE_ID_ADMIN)->users->count() === 1) {
+                throw new DeletingProtectedRecordException($user, 'Cannot delete the last admin user.');
+            }
+            $user->roles()->detach();
+        });
     }
 
     /**
@@ -80,6 +84,22 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
             $binary_ids[] = $binary->id;
         }
         return $binary_ids;
+    }
+
+    /**
+     * Accessor for the virtual 'message_ids' attribute.
+     *
+     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
+     *
+     * @return array an array containing the message IDs
+     */
+    public function getMessageIdsAttribute()
+    {
+        $message_ids = [];
+        foreach ($this->messages as $message) {
+            $message_ids[] = $message->id;
+        }
+        return $message_ids;
     }
 
     /**
@@ -121,7 +141,7 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
      */
     public function hasMessages()
     {
-        $this->messages->isEmpty();
+        !$this->messages->isEmpty();
     }
 
     /**
@@ -193,10 +213,11 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
      *
      * @param \App\Models\Role $role the role to remove
      *
-     * @return Void
+     * @return void
      */
     public function removeRole(Role $role)
     {
+        # TODO: check if this user is the last admin, currently in controller
         $this->roles()->detach($role);
     }
 }

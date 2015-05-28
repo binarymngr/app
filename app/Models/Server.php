@@ -19,13 +19,14 @@ final class Server extends RESTModel
 
     /**
      * @{inherit}
-     *
-     * @Override to detach the binaries before deletion
      */
-    public function delete()
+    public static function boot()
     {
-        $this->binary_versions()->detach();
-        return parent::delete();
+        parent::boot();
+        Server::deleting(function(Server $server)
+        {
+            $server->binary_version()->detach();
+        });
     }
 
     /**
@@ -35,7 +36,7 @@ final class Server extends RESTModel
      */
     public function hasBinariesInstalled()
     {
-        return !$this->binary_versions()->get()->isEmpty();  # FIXME: $this->binary_versions
+        return !$this->binary_versions()->isEmpty();  # TODO: $this->binary_version
     }
 
     /**
@@ -45,7 +46,7 @@ final class Server extends RESTModel
      */
     public function hasOutdatedBinaryVersionsInstalled()
     {
-        foreach ($this->binary_versions()->get() as $version) {  # FIXME: $this->binary_versions
+        foreach ($this->binary_versions()->get() as $version) {  # TODO: $this->binary_version
             if (!$version->isLatest()) {
                 return true;
             }
@@ -81,7 +82,7 @@ final class Server extends RESTModel
     public function getBinaryVersionIdsAttribute()
     {
         $binary_version_ids = [];
-        foreach ($this->binary_versions()->get() as $binary_version) {  # FIXME: $this->binary_versions
+        foreach ($this->binary_versions()->get() as $binary_version) {  # TODO: $this->binary_version
             $binary_version_ids[] = $binary_version->id;
         }
         return $binary_version_ids;

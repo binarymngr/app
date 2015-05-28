@@ -20,14 +20,15 @@ final class Binary extends RESTModel
 
     /**
      * @{inherit}
-     *
-     * @Override to detach the categories and delete the versions
      */
-    public function delete()
+    public static function boot()
     {
-        $this->categories()->detach();
-        $this->versions()->delete();
-        return parent::delete();
+        parent::boot();
+        Binary::deleting(function(Binary $binary)
+        {
+            $binary->categories()->detach();
+            $binary->versions()->delete();
+        });
     }
 
     /**
@@ -69,9 +70,12 @@ final class Binary extends RESTModel
      */
     public function getLatestVersion()
     {
-        return $this->versions->reduce(function($version) {
-            return $version->isLatest();
-        });
+        foreach ($this->versions as $version) {
+            if ($version->isLatest()) {
+                return $version;
+            }
+        }
+        return null;
     }
 
     /**
@@ -81,7 +85,9 @@ final class Binary extends RESTModel
      */
     public function getOutdatedVersions()
     {
-        return $this->binaries->reject();
+        return $this->versions->reject(function($version) {
+            return $version->isLatest();
+        });
     }
 
     /**

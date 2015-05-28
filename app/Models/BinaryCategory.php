@@ -16,13 +16,14 @@ final class BinaryCategory extends RESTModel
 
     /**
      * @{inherit}
-     *
-     * @Override to detach the binaries before deletion
      */
-    public function delete()
+    public static function boot()
     {
-        $this->binaries()->detach();
-        return parent::delete();
+        parent::boot();
+        BinaryCategory::deleting(function(BinaryCategory $category)
+        {
+            $category->binaries()->detach();
+        });
     }
 
     /**
