@@ -3,7 +3,6 @@
 use App\Http\Helpers\RestrictedDeletable;
 use App\Http\Helpers\RestrictedUpdatable;
 use App\Http\Helpers\UserDependentGetAll;
-use App\Http\Controllers\RESTController;
 use App\Models\Binary;
 use Auth;
 use Illuminate\Http\Request;

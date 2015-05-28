@@ -31,6 +31,18 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
 
 
     /**
+     * Adds the user to the role / the role to this user.
+     *
+     * @param \App\Models\Role $role the role to add
+     *
+     * @return Void
+     */
+    public function addRole(Role $role)
+    {
+        $this->roles()->attach($role);
+    }
+
+    /**
      * @{inherit}
      *
      * @Override to detach the groups before deletion
@@ -163,5 +175,17 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     public function ownsServers()
     {
         return !$this->servers->isEmpty();
+    }
+
+    /**
+     * Removes the user from the role / the role from this user.
+     *
+     * @param \App\Models\Role $role the role to remove
+     *
+     * @return Void
+     */
+    public function removeRole(Role $role)
+    {
+        $this->roles()->detach($role);
     }
 }

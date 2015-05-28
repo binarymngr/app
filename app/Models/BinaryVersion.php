@@ -1,5 +1,7 @@
 <?php namespace App\Models;
 
+use DateTime;
+
 final class BinaryVersion extends RESTModel
 {
     protected $appends  = ['server_ids'];

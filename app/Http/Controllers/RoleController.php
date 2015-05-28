@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Controllers\RESTController;
 use App\Http\Helpers\UserDependentGetAll;
 use App\Models\Role;
 use Auth;

@@ -13,6 +13,7 @@ abstract class RESTModel extends Ardent
      | Ardent properties to auto hydrate model fields from the Request.
      */
     public $autoHydrateEntityFromInput    = true;
+    public $autoPurgeRedundantAttributes  = true;
     public $forceEntityHydrationFromInput = true;
 
     /*
