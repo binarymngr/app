@@ -1,7 +1,6 @@
 <?php namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Http\Request;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -35,7 +34,7 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render(Request $rqst, Exception $e)
+    public function render($rqst, Exception $e)
     {
         return parent::render($rqst, $e);
     }
