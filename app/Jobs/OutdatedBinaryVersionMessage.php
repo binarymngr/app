@@ -1,14 +1,11 @@
-<?php namespace App\Events;
+<?php namespace App\Jobs;
 
 use App\Models\BinaryVersion;
 use App\Models\Message;
 
-final class BinaryVersionObserver
+final class OutdatedBinaryVersionMessage extends Job
 {
-    /**
-     *
-     */
-    public function created(BinaryVersion $version)
+    public function handle(BinaryVersion $version)
     {
         if ($version->isLatest()) {
             foreach ($version->binary->getOutdatedVersions() as $outdated) {

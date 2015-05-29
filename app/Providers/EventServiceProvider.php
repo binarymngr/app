@@ -1,7 +1,7 @@
 <?php namespace App\Providers;
 
-use App\Events\BinaryVersionObserver;
 use App\Models\BinaryVersion;
+use Event;
 
 final class EventServiceProvider extends AppServiceProvider
 {
@@ -10,6 +10,6 @@ final class EventServiceProvider extends AppServiceProvider
      */
     public function boot()
     {
-        BinaryVersion::observe(new BinaryVersionObserver());
+        BinaryVersion::created('App\Jobs\OutdatedBinaryVersionMessage@handle');
     }
 }
