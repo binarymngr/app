@@ -1,10 +1,11 @@
 <?php namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\Request;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 
-class Handler extends ExceptionHandler {
-
+class Handler extends ExceptionHandler
+{
     /**
      * A list of the exception types that should not be reported.
      *
@@ -34,9 +35,8 @@ class Handler extends ExceptionHandler {
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render(Request $rqst, Exception $e)
     {
-        return parent::render($request, $e);
+        return parent::render($rqst, $e);
     }
-
 }
