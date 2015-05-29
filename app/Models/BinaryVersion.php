@@ -1,11 +1,5 @@
 <?php namespace App\Models;
 
-use DateTime;
-
-/**
- * TODO: creating a new version via API doesn't work because Carbon expects H:i:s and we only send a date
- * TODO: use Carbon instead of DateTime
- */
 final class BinaryVersion extends RESTModel
 {
     protected $appends  = ['server_ids'];
@@ -47,22 +41,6 @@ final class BinaryVersion extends RESTModel
             })->flatten();
         }
         return $versions;
-    }
-
-    /**
-     * Accessor for the 'eol' attribute.
-     *
-     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
-     *
-     * @return string the EOL in format 'm/d/y'
-     */
-    public function getEolAttribute($eol)
-    {
-        if ($eol !== null) {
-            $date = DateTime::createFromFormat('Y-m-d h:i:s', $eol);
-            $eol = $date->format('m/d/y');
-        }
-        return $eol;
     }
 
     /**
