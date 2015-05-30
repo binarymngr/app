@@ -1,7 +1,9 @@
 <?php namespace App\Providers;
 
-use App\Events\BinaryVersionObserver;
+use App\Jobs\OutdatedBinaryVersionMessage;
 use App\Models\BinaryVersion;
+use Event;
+use Queue;
 
 final class EventServiceProvider extends AppServiceProvider
 {
@@ -10,6 +12,9 @@ final class EventServiceProvider extends AppServiceProvider
      */
     public function boot()
     {
-        BinaryVersion::observe(new BinaryVersionObserver());
+        # directly passing the job as a callback doesn't work...therefor the workaround
+        BinaryVersion::created(function(BinaryVersion $binary_version) {
+            Queue::push(new OutdatedBinaryVersionMessage($binary_version));
+        });
     }
 }
