@@ -3,7 +3,7 @@
 use App\Models\BinaryVersion;
 use App\Models\Message;
 
-final class OutdatedBinaryVersionMessage extends Job
+final class OutdatedBinaryVersionsMessages extends Job
 {
     /**
      * Stores a reference to the binary version for which this job was triggered.
@@ -27,7 +27,7 @@ final class OutdatedBinaryVersionMessage extends Job
                     foreach ($outdated->servers as $server) {
                         $msg = new Message;
                         $msg->title = 'Outdated binary version installed';
-                        $msg->body  = "The version '{$version->identifier}' of '{$version->binary->name}' is outdated";
+                        $msg->body  = "Version '{$version->identifier}' of '{$version->binary->name}' is outdated";
                         $msg->body .= " and installed on server '{$server->name}'. Make sure to upgrade soon!";
                         $msg->user_id = $version->binary->owner->id;
                         $msg->save();
