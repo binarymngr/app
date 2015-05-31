@@ -2,8 +2,6 @@
 
 use App\Exceptions\DeletingProtectedRecordException;
 use App\Http\Helpers\UserDependentGetAll;
-use App\Models\Role;
-use Auth;
 
 final class RoleController extends RESTController
 {

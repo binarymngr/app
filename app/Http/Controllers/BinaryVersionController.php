@@ -4,7 +4,6 @@ use App\Http\Helpers\RestrictedDeletable;
 use App\Http\Helpers\RestrictedUpdatable;
 use App\Http\Helpers\UserDependentGetAll;
 use App\Models\Binary;
-use App\Models\BinaryVersion;
 use Auth;
 use Illuminate\Http\Request;
 

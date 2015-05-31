@@ -87,8 +87,6 @@ $app->group(['middleware' => 'forceLoggedIn'], function($app)
     /*
      | Users
      */
-    $app->post   ('users/{id}/add-role',    'App\Http\Controllers\UserController@addRole');
-    $app->post   ('users/{id}/remove-role', 'App\Http\Controllers\UserController@removeRole');
     $app->delete ('users/{id}', 'App\Http\Controllers\UserController@deleteById');
     $app->get    ('users/{id}', 'App\Http\Controllers\UserController@getById');
     $app->options('users/{id}', 'App\Http\Controllers\UserController@optionsForId');

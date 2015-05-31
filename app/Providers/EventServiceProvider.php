@@ -2,7 +2,6 @@
 
 use App\Jobs\OutdatedBinaryVersionsMessages;
 use App\Models\BinaryVersion;
-use Event;
 use Queue;
 
 final class EventServiceProvider extends AppServiceProvider

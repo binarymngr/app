@@ -32,18 +32,6 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
 
 
     /**
-     * Adds the user to the role / the role to this user.
-     *
-     * @param \App\Models\Role $role the role to add
-     *
-     * @return void
-     */
-    public function addRole(Role $role)
-    {
-        $this->roles()->attach($role);
-    }
-
-    /**
      * @{inherit}
      */
     public static function boot()
@@ -206,18 +194,5 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     public function ownsServers()
     {
         return !$this->servers->isEmpty();
-    }
-
-    /**
-     * Removes the user from the role / the role from this user.
-     *
-     * @param \App\Models\Role $role the role to remove
-     *
-     * @return void
-     */
-    public function removeRole(Role $role)
-    {
-        # TODO: check if this user is the last admin, currently in controller
-        $this->roles()->detach($role);
     }
 }
