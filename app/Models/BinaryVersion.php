@@ -1,5 +1,7 @@
 <?php namespace App\Models;
 
+use DateTime;
+
 final class BinaryVersion extends RESTModel
 {
     protected $appends  = ['server_ids'];
@@ -57,6 +59,25 @@ final class BinaryVersion extends RESTModel
             $server_ids[] = $server->id;
         }
         return $server_ids;
+    }
+
+    /**
+     * Checks if the end-of-life date (EOL) of this binary is in the past.
+     *
+     * If no EOL is defined, false is returned.
+     *
+     * @return Bool true if the EOL is in the past
+     */
+    public function hasReachedEol()
+    {
+        if ($this->eol !== null) {
+            $eol = DateTime::createFromFormat('Y-m-d H:i:s', $this->eol);
+            $eol->setTime(0, 0, 0);
+            $now = new DateTime;
+            $now->setTime(0, 0, 0);
+            return $now >= $eol;
+        }
+        return false;
     }
 
     /**
