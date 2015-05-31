@@ -4,7 +4,6 @@ use App\Models\BinaryVersion;
 use App\Models\Message;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
 final class CreateEolMessages extends Command
 {

@@ -2,6 +2,7 @@
 
 use App\Exceptions\DeletingProtectedRecordException;
 use App\Http\Helpers\UserDependentGetAll;
+use Illuminate\Database\QueryException;
 
 final class RoleController extends RESTController
 {
@@ -34,6 +35,11 @@ final class RoleController extends RESTController
             return parent::deleteById($id);
         } catch (DeletingProtectedRecordException $ex) {
             abort(403, 'The given role is protected and can not be deleted.');
+        } catch (QueryException $ex) {
+            if ((int)$ex->getCode() === 45000) {
+                abort(403, 'The given role is protected and can not be deleted.');  # TODO: non-static error message
+            }
+            throw $ex;
         }
     }
 }
