@@ -1,0 +1,48 @@
+BUGS:
+    -
+
+
+FEATURES:
+    - A send-message-mails command which sends a summary email with all unread messages to the user
+    - ESS/WebSocket support for the messages
+    - Useful permissions/roles implementation. Roles are useless right now.
+
+
+TODO:
+    - CHECK CONSTRAINT/TRIGGER in DB for integrity. E.g. the 'at least one admin user' check could be done on the DB.
+
+
+SNIPPETS:
+
+    DELIMITER $$
+
+    CREATE TRIGGER prevent_protected_roles_deletion
+    BEFORE DELETE ON roles
+    FOR EACH ROW
+    BEGIN
+        IF OLD.id IN (1) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'This record is protected and cannot be removed.';
+        END IF;
+    END
+    $$
+
+    DELIMITER ;
+
+
+    DELIMITER $$
+
+    CREATE TRIGGER prevent_last_admin_deletion
+    BEFORE DELETE ON users_roles
+    FOR EACH ROW
+    BEGIN
+        IF OLD.role_id = 1
+        AND (SELECT COUNT(*) FROM users_roles WHERE role_id = 1 GROUP BY role_id) = 1
+        THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Cannot remove the last admin role membership.';
+        END IF;
+    END
+    $$
+
+    DELIMITER ;
