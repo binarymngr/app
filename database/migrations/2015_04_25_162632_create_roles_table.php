@@ -27,7 +27,7 @@ class CreateRolesTable extends Migration
             BEFORE DELETE ON roles
             FOR EACH ROW
             BEGIN
-                IF OLD.id IN (1) THEN
+                IF OLD.id IN (1,2) THEN
                     SIGNAL SQLSTATE '45000'
                     SET MESSAGE_TEXT = 'This record is protected and cannot be removed.';
                 END IF;
