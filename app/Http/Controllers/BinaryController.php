@@ -12,9 +12,15 @@ final class BinaryController extends RESTController
     use RestrictedDeletable, RestrictedUpdatable, UserDependentGetAll;
 
 
+    /**
+     * @{inherit}
+     */
     protected static $model = 'App\Models\Binary';
 
 
+    /**
+     * @{inherit}
+     */
     public function __construct()
     {
         $this->middleware('forceVisibleToUser', ['only' => [

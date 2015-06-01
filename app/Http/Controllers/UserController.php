@@ -12,9 +12,15 @@ final class UserController extends RESTController
     use UserDependentGetAll;
 
 
+    /**
+     * @{inherit}
+     */
     protected static $model = 'App\Models\User';
 
 
+    /**
+     * @{inherit}
+     */
     public function __construct()
     {
         $this->middleware('forceAdminRole', ['only' => [
