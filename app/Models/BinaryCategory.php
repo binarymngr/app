@@ -17,18 +17,6 @@ final class BinaryCategory extends RESTModel
     /**
      * @{inherit}
      */
-    public static function boot()
-    {
-        parent::boot();
-        BinaryCategory::deleting(function(BinaryCategory $category)
-        {
-            $category->binaries()->detach();
-        });
-    }
-
-    /**
-     * @{inherit}
-     */
     public static function getAllVisibleToUser(User $user)
     {
         return BinaryCategory::all();

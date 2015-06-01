@@ -21,19 +21,6 @@ final class Binary extends RESTModel
     /**
      * @{inherit}
      */
-    public static function boot()
-    {
-        parent::boot();
-        Binary::deleting(function(Binary $binary)
-        {
-            $binary->categories()->detach();
-            $binary->versions()->delete();
-        });
-    }
-
-    /**
-     * @{inherit}
-     */
     public static function getAllVisibleToUser(User $user)
     {
         $binaries = null;

@@ -20,8 +20,8 @@ class CreateBinariesCategoriesTable extends Migration
 
         Schema::table('binaries_categories', function (Blueprint $tbl) {
             $tbl->primary(['binary_id', 'binary_category_id']);
-            $tbl->foreign('binary_id')->references('id')->on('binaries');
-            $tbl->foreign('binary_category_id')->references('id')->on('binary_categories');
+            $tbl->foreign('binary_id')->references('id')->on('binaries')->onDelete('cascade');
+            $tbl->foreign('binary_category_id')->references('id')->on('binary_categories')->onDelete('cascade');
         });
     }
 

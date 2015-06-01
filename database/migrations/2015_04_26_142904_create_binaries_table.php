@@ -23,7 +23,7 @@ class CreateBinariesTable extends Migration
         });
 
         Schema::table('binaries', function (Blueprint $tbl) {
-            $tbl->foreign('owner_id')->references('id')->on('users');
+            $tbl->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

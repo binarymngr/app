@@ -19,17 +19,6 @@ final class BinaryVersion extends RESTModel
         'binary_id'  => 'required|exists:binaries,id|integer'
     ];
 
-    /**
-     * @{inherit}
-     */
-    public static function boot()
-    {
-        parent::boot();
-        BinaryVersion::deleting(function(BinaryVersion $version)
-        {
-            $version->servers()->detach();
-        });
-    }
 
     /**
      * @{inherit}

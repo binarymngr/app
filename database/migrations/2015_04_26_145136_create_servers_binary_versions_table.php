@@ -20,8 +20,8 @@ class CreateServersBinaryVersionsTable extends Migration
 
         Schema::table('servers_binary_versions', function (Blueprint $tbl) {
             $tbl->primary(['server_id', 'binary_version_id']);
-            $tbl->foreign('server_id')->references('id')->on('servers');
-            $tbl->foreign('binary_version_id')->references('id')->on('binary_versions');
+            $tbl->foreign('server_id')->references('id')->on('servers')->onDelete('cascade');
+            $tbl->foreign('binary_version_id')->references('id')->on('binary_versions')->onDelete('cascade');
         });
     }
 

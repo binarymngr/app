@@ -22,7 +22,7 @@ class CreateServersTable extends Migration
         });
 
         Schema::table('servers', function (Blueprint $tbl) {
-            $tbl->foreign('owner_id')->references('id')->on('users');
+            $tbl->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

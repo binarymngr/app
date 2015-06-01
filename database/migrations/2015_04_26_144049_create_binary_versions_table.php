@@ -23,7 +23,7 @@ class CreateBinaryVersionsTable extends Migration
         });
 
         Schema::table('binary_versions', function (Blueprint $tbl) {
-            $tbl->foreign('binary_id')->references('id')->on('binaries');
+            $tbl->foreign('binary_id')->references('id')->on('binaries')->onDelete('cascade');
             // TODO: unique together: identfier, binary_id
         });
     }

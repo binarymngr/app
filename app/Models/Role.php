@@ -36,7 +36,6 @@ final class Role extends RESTModel
             if (Role::getProtectedRoles()->contains($role->id)) {
                 throw new DeletingProtectedRecordException($role, 'Cannot delete this protected role.');
             }
-            $role->users()->detach();
         });
     }
 

@@ -42,7 +42,6 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
             if ($user->isAdmin() && Role::find(Role::ROLE_ID_ADMIN)->users->count() === 1) {
                 throw new DeletingProtectedRecordException($user, 'Cannot delete the last admin user.');
             }
-            $user->roles()->detach();
         });
     }
 

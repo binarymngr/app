@@ -22,7 +22,7 @@ class CreateMessagesTable extends Migration
         });
 
         Schema::table('messages', function (Blueprint $tbl) {
-            $tbl->foreign('user_id')->references('id')->on('users');
+            $tbl->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

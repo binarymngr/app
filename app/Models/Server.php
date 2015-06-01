@@ -18,18 +18,6 @@ final class Server extends RESTModel
 
 
     /**
-     * @{inherit}
-     */
-    public static function boot()
-    {
-        parent::boot();
-        Server::deleting(function(Server $server)
-        {
-            $server->binary_versions()->detach();
-        });
-    }
-
-    /**
      * Checks if binaries are installed on this server.
      *
      * @return bool true if at least one binary (version) is installed
