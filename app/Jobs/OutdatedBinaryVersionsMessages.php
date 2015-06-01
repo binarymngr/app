@@ -41,9 +41,9 @@ final class OutdatedBinaryVersionsMessages extends Job
                     foreach ($outdated->servers as $server) {
                         $msg = new Message;
                         $msg->title = 'Outdated binary version installed';
-                        $msg->body  = "Version '{$version->identifier}' of '{$version->binary->name}' is outdated";
+                        $msg->body  = "Version '{$outdated->identifier}' of '{$outdated->binary->name}' is outdated";
                         $msg->body .= " and installed on server '{$server->name}'. Make sure to upgrade soon!";
-                        $msg->user_id = $version->binary->owner->id;
+                        $msg->user_id = $outdated->binary->owner->id;
                         $msg->save();
                     }
                 }
