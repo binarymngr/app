@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Collection;
 final class Role extends RESTModel
 {
     /**
-     * Numeric ID of the admin role as it's stored in the DB.
+     * Numeric IDs of protected roles as stored in the DB.
      *
      * @var int
      */
     const ROLE_ID_ADMIN = 1;
+    const ROLE_ID_USER  = 2;
 
     protected $appends  = ['user_ids'];
     protected $fillable = ['name', 'description'];
@@ -61,7 +62,8 @@ final class Role extends RESTModel
     public static function getProtectedRoles()
     {
         return Collection::make([
-            Role::find(Role::ROLE_ID_ADMIN)
+            Role::find(Role::ROLE_ID_ADMIN),
+            Role::find(Role::ROLE_ID_USER)
         ]);
     }
 

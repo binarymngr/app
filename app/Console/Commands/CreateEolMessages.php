@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputOption;
 
 final class CreateEolMessages extends Command
 {
-
     protected $name = 'binarymngr:create-eol-messages';
     protected $description = 'Creates messages for all binary versions which have reached end-of-life.';
 

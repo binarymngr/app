@@ -2,6 +2,10 @@
 
 use Exception;
 
+/**
+ * The DeletingProtectedRecordException is meant to be thrown when deleting
+ * a model record is not possible/allowed because it is protected (e.g. the admin role).
+ */
 final class DeletingProtectedRecordException extends Exception
 {
     /**

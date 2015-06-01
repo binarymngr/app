@@ -24,10 +24,8 @@ final class UserController extends RESTController
     public function __construct()
     {
         $this->middleware('forceAdminRole', ['only' => [
-            'addRole',
             'create',
             'deleteById',
-            'removeRole'
         ]]);
         $this->middleware('forceVisibleToUser', ['only' => [
             'getById'
@@ -68,15 +66,13 @@ final class UserController extends RESTController
          } elseif ($record->isUpdatableByUser($user)) {
              if ($record->validate() && $record->update()) {
                  $role_ids = $rqst->input('role_ids');
-                 if ($role_ids !== null) {
-                     try {
-                         $record->roles()->sync($role_ids);
-                     } catch (QueryException $ex) {
-                         if ((int)$ex->getCode() === 45000) {
-                             abort(403, 'Cannot remove the admin role membership.');  # TODO: non-static error message
-                         }
-                         throw $ex;
+                 try {
+                     $record->roles()->sync(is_array($role_ids) ? $role_ids : []);
+                 } catch (QueryException $ex) {
+                     if ((int)$ex->getCode() === 45000) {
+                         abort(403, 'Cannot remove the admin role membership.');  # TODO: non-static error message
                      }
+                     throw $ex;
                  }
                  $response = $record;
              } else {

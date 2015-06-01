@@ -53,7 +53,7 @@ final class BinaryCategory extends RESTModel
     /**
      * Checks if a binary belongs to this category.
      *
-     * @return Bool true if at least one binary is in this category
+     * @return bool true if at least one binary is in this category
      */
     public function hasBinaries()
     {

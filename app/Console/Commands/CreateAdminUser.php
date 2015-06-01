@@ -7,7 +7,6 @@ use Illuminate\Console\Command;
 
 final class CreateAdminUser extends Command
 {
-
     protected $name = 'binarymngr:create-admin-user';
     protected $description = 'Creates a new admin user.';
 

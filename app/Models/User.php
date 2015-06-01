@@ -125,7 +125,7 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     /**
      * Checks if messages exist for this user.
      *
-     * @return Bool true if a message for this user exists
+     * @return bool true if a message for this user exists
      */
     public function hasMessages()
     {
@@ -135,7 +135,7 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     /**
      * Checks if the belongs to at least one role.
      *
-     * @return Bool true if the user belongs to at least one role
+     * @return bool true if the user belongs to at least one role
      */
     public function hasRoles()
     {
@@ -145,7 +145,7 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     /**
      * Checks if the user is admin (has the admin role).
      *
-     * @return Bool true if the user has the admin role
+     * @return bool true if the user has the admin role
      */
     public function isAdmin()
     {
@@ -179,7 +179,7 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     /**
      * Checks if the user owns binaries.
      *
-     * @return Bool true if the user owns at least one binary
+     * @return bool true if the user owns at least one binary
      */
     public function ownsBinaries()
     {
@@ -189,7 +189,7 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     /**
      * Checks if the user owns servers.
      *
-     * @return Bool true if the user owns at least one server
+     * @return bool true if the user owns at least one server
      */
     public function ownsServers()
     {

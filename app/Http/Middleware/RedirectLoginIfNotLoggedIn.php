@@ -4,6 +4,9 @@ use Auth;
 use Closure;
 use Illuminate\Http\Request;
 
+/**
+ * Before middleware to redirect the user to the login page if he's not logged-in.
+ */
 final class RedirectLoginIfNotLoggedIn
 {
     /**

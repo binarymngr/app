@@ -4,6 +4,10 @@ use Auth;
 use Closure;
 use Illuminate\Http\Request;
 
+/**
+ * After middleware to check if the to be returned record is visible to the request user.
+ * If the record is not visisble, a 401 Unauthorized error is returned.
+ */
 final class UnauthorizedIfNotVisibleToUser
 {
     /**

@@ -25,14 +25,14 @@ final class Server extends RESTModel
         parent::boot();
         Server::deleting(function(Server $server)
         {
-            $server->binary_version()->detach();
+            $server->binary_versions()->detach();
         });
     }
 
     /**
      * Checks if binaries are installed on this server.
      *
-     * @return Bool true if at least one binary (version) is installed
+     * @return bool true if at least one binary (version) is installed
      */
     public function hasBinariesInstalled()
     {
@@ -42,7 +42,7 @@ final class Server extends RESTModel
     /**
      * Checks if this server has binaries installed that are not up-to-date.
      *
-     * @return Bool true if at least one binary is not the latest version
+     * @return bool true if at least one binary is not the latest version
      */
     public function hasOutdatedBinaryVersionsInstalled()
     {
