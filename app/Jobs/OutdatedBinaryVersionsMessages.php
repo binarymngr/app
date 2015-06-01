@@ -3,6 +3,12 @@
 use App\Models\BinaryVersion;
 use App\Models\Message;
 
+/**
+ * The OutdatedBinaryVersionsMessages job is best used as a queued callback
+ * for BinaryVersion created events. It will check if the newly created version
+ * is newer than the existing ones and create 'outdated binary version' messages
+ * for all older binary versions that are installed.
+ */
 final class OutdatedBinaryVersionsMessages extends Job
 {
     /**
@@ -13,11 +19,19 @@ final class OutdatedBinaryVersionsMessages extends Job
     private $binary_version;
 
 
+    /**
+     * Constructor to initialize a new OutdatedBinaryVersionsMessages instance.
+     *
+     * @param \App\Models\BinaryVersion $binary_version the newly created binary version
+     */
     public function __construct(BinaryVersion $binary_version)
     {
         $this->binary_version = $binary_version;
     }
 
+    /**
+     * @{inherit}
+     */
     public function handle()
     {
         $version = $this->binary_version;

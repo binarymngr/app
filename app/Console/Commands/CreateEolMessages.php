@@ -4,11 +4,9 @@ use App\Models\BinaryVersion;
 use App\Models\Message;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
 final class CreateEolMessages extends Command
 {
-
     protected $name = 'binarymngr:create-eol-messages';
     protected $description = 'Creates messages for all binary versions which have reached end-of-life.';
 

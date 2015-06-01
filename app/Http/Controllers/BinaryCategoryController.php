@@ -9,5 +9,8 @@ final class BinaryCategoryController extends RESTController
     use RestrictedDeletable, RestrictedUpdatable, UserDependentGetAll;
 
 
+    /**
+     * @{inherit}
+     */
     protected static $model = 'App\Models\BinaryCategory';
 }

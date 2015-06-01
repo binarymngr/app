@@ -8,9 +8,15 @@ final class MessageController extends RESTController
     use RestrictedDeletable, UserDependentGetAll;
 
 
+    /**
+     * @{inherit}
+     */
     protected static $model = 'App\Models\Message';
 
 
+    /**
+     * @{inherit}
+     */
     public function __construct()
     {
         $this->middleware('forceVisibleToUser', ['only' => [

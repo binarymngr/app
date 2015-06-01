@@ -109,7 +109,7 @@ final class Binary extends RESTModel
     /**
      * Checks if this binary is within a category.
      *
-     * @return Bool true if at least one category is associated with this binary
+     * @return bool true if at least one category is associated with this binary
      */
     public function hasCategories()
     {
@@ -119,7 +119,7 @@ final class Binary extends RESTModel
     /**
      * Checks if versions have been added to this binary.
      *
-     * @return Bool true if at least one version has been added
+     * @return bool true if at least one version has been added
      */
     public function hasVersions()
     {
@@ -129,7 +129,7 @@ final class Binary extends RESTModel
     /**
      * Checks if this binary is installed on a server.
      *
-     * @return Bool true if at least one server has the binary installed
+     * @return bool true if at least one server has the binary installed
      */
     public function isInstalled()
     {

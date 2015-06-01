@@ -66,7 +66,7 @@ final class BinaryVersion extends RESTModel
      *
      * If no EOL is defined, false is returned.
      *
-     * @return Bool true if the EOL is in the past
+     * @return bool true if the EOL is in the past
      */
     public function hasReachedEol()
     {
@@ -91,7 +91,7 @@ final class BinaryVersion extends RESTModel
     /**
      * Checks if this version is installed on a server.
      *
-     * @return Bool true if at least one server has this version installed
+     * @return bool true if at least one server has this version installed
      */
     public function isInstalled()
     {
@@ -101,7 +101,7 @@ final class BinaryVersion extends RESTModel
     /**
      * Checks if this version is the latest for the parent binary.
      *
-     * @return Bool true if no version with a greater (>) identifier exists.
+     * @return bool true if no version with a greater (>) identifier exists.
      */
     public function isLatest()
     {
