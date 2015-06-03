@@ -54,7 +54,7 @@ final class BinaryController extends RESTController
              abort(404, 'Record not found.');
          } elseif ($record->isUpdatableByUser($user)) {
              if ($record->validate() && $record->update()) {
-                 $category_ids = $rqst->input('category_ids');
+                 $category_ids = $rqst->input('binary_category_ids');
                  $record->categories()->sync(is_array($category_ids) ? $category_ids : []);
                  $response = $record;
              } else {

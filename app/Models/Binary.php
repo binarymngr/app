@@ -2,9 +2,10 @@
 
 final class Binary extends RESTModel
 {
-    protected $appends  = ['category_ids', 'version_ids'];
+    protected $appends  = ['binary_category_ids', 'binary_version_ids'];
     protected $fillable = ['name', 'description', 'homepage', 'owner_id'];
-    protected $visible  = ['id', 'name', 'description', 'homepage', 'owner_id', 'category_ids', 'version_ids'];
+    protected $visible  = ['id', 'name', 'description', 'homepage', 'owner_id',
+                           'binary_category_ids', 'binary_version_ids'];
 
     public static $relationsData = [
         'categories' => [self::BELONGS_TO_MANY, 'App\Models\BinaryCategory', 'table' => 'binaries_categories'],
@@ -35,19 +36,35 @@ final class Binary extends RESTModel
     }
 
     /**
-     * Accessor for the virtual 'category_ids' attribute.
+     * Accessor for the virtual 'binary_category_ids' attribute.
      *
      * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
      *
      * @return array an array containing the category IDs
      */
-    public function getCategoryIdsAttribute()
+    public function getBinaryCategoryIdsAttribute()
     {
         $category_ids = [];
         foreach ($this->categories as $category) {
             $category_ids[] = $category->id;
         }
         return $category_ids;
+    }
+
+    /**
+     * Accessor for the virtual 'binary_version_ids' attribute.
+     *
+     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
+     *
+     * @return array an array containing the version IDs
+     */
+    public function getBinaryVersionIdsAttribute()
+    {
+        $version_ids = [];
+        foreach ($this->versions as $version) {
+            $version_ids[] = $version->id;
+        }
+        return $version_ids;
     }
 
     /**
@@ -75,22 +92,6 @@ final class Binary extends RESTModel
         return $this->versions->reject(function($version) {
             return $version->isLatest();
         });
-    }
-
-    /**
-     * Accessor for the virtual 'version_ids' attribute.
-     *
-     * @link http://laravel.com/docs/5.0/eloquent#converting-to-arrays-or-json
-     *
-     * @return array an array containing the version IDs
-     */
-    public function getVersionIdsAttribute()
-    {
-        $version_ids = [];
-        foreach ($this->versions as $version) {
-            $version_ids[] = $version->id;
-        }
-        return $version_ids;
     }
 
     /**
