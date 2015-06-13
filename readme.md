@@ -1,21 +1,46 @@
-## Lumen PHP Framework
+# binarymngr
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/lumen-framework/v/unstable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+> A web app to manage self-compiled binaries.
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Installing the application
 
-## Official Documentation
+After having cloned the repository, the commands below need to be run in order to use the application.
 
-Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
+### Customize the Configuration(s)
 
-## Security Vulnerabilities
+```bash
+nano config/app.php       # replace the 'key'
+nano config/database.php  # set the MySQL credentials
+nano config/session.php   # optionally set 'domain' and 'secure'
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+> You can also set an alternative queue backend in `config/queue.php`.
 
-### License
+### Migrate/Seed the Database
 
-The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+```bash
+php artisan migrate:install  # setup the Lumen migration table
+php artisan migrate --seed   # setup the app migrations + seeds
+```
+
+### Create an Admin User
+
+```bash
+php artisan binarymngr:create-admin-user
+```
+
+### Process Queued Work
+
+```bash
+php artisan queue:listen --daemon  # without --daemon to run in foreground
+```
+
+> Right now, the only thing put into queue is a job to create messages if a newer binary version is created.
+
+### Start the Scheduler
+
+```bash
+* * * * * php /path/to/artisan schedule:run 1>> /dev/null 2>&1  # e.g. in /etc/crontab
+```
+
+> The scheduler will create end-of-life reached messages once a day for installed binary versions.
