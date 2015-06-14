@@ -12,7 +12,8 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     use Authenticatable, CanResetPassword;
 
 
-    public $autoHashPasswordAttributes = true;
+    public $autoHashPasswordAttributes    = true;
+    public $forceEntityHydrationFromInput = false;  # otherwise password needs to be resend every time
 
     protected $appends  = ['binary_ids', 'message_ids', 'role_ids', 'server_ids'];
     protected $fillable = ['email', 'password'];
