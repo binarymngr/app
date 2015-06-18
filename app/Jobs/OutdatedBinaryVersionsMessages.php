@@ -1,4 +1,6 @@
-<?php namespace App\Jobs;
+<?php
+
+namespace App\Jobs;
 
 use App\Models\BinaryVersion;
 use App\Models\Message;

@@ -1,4 +1,6 @@
-<?php namespace App\Models;
+<?php
+
+namespace App\Models;
 
 use App\Exceptions\DeletingProtectedRecordException;
 use Illuminate\Database\Eloquent\Collection;

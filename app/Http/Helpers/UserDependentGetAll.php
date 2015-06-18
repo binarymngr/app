@@ -1,4 +1,6 @@
-<?php namespace App\Http\Helpers;
+<?php
+
+namespace App\Http\Helpers;
 
 use Auth;
 

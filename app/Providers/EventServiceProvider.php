@@ -1,10 +1,13 @@
-<?php namespace App\Providers;
+<?php
+
+namespace App\Providers;
 
 use App\Jobs\OutdatedBinaryVersionsMessages;
 use App\Models\BinaryVersion;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Queue;
 
-final class EventServiceProvider extends AppServiceProvider
+class EventServiceProvider extends ServiceProvider
 {
     /**
      * @{inherit}
