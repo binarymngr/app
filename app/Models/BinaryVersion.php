@@ -1,5 +1,6 @@
 <?php namespace App\Models;
 
+use DateInterval;
 use DateTime;
 
 final class BinaryVersion extends RESTModel
@@ -74,6 +75,8 @@ final class BinaryVersion extends RESTModel
             $eol = DateTime::createFromFormat('Y-m-d H:i:s', $this->eol);
             $eol->setTime(0, 0, 0);
             $now = new DateTime;
+            $threshold = config('binarymngr.eol_threshold');
+            $now->sub(new DateInterval("P{$threshold}D"));
             $now->setTime(0, 0, 0);
             return $now >= $eol;
         }
