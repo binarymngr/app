@@ -10,8 +10,9 @@ final class BinaryVersion extends RESTModel
     protected $visible  = ['id', 'identifier', 'note', 'eol', 'binary_id', 'server_ids'];
 
     public static $relationsData = [
-        'binary'  => [self::BELONGS_TO, 'App\Models\Binary', 'table' => 'binaries'],
-        'servers' => [self::BELONGS_TO_MANY, 'App\Models\Server', 'table' => 'servers_binary_versions']
+        'binary'   => [self::BELONGS_TO, 'App\Models\Binary', 'table' => 'binaries'],
+        'messages' => [self::HAS_MANY, 'App\Models\Message'],
+        'servers'  => [self::BELONGS_TO_MANY, 'App\Models\Server', 'table' => 'servers_binary_versions']
     ];
     public static $rules = [
         'identifier' => 'required|between:1,64',
@@ -48,6 +49,16 @@ final class BinaryVersion extends RESTModel
             $server_ids[] = $server->id;
         }
         return $server_ids;
+    }
+
+    /**
+     * Checks if messages referencing this binary exist.
+     *
+     * @return bool true if at one message references this binary
+     */
+    public function hasMessages()
+    {
+        return $this->messages->isEmpty();
     }
 
     /**

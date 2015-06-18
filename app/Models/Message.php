@@ -3,10 +3,14 @@
 final class Message extends RESTModel
 {
     protected $fillable = ['title', 'body'];
-    protected $visible  = ['id', 'title', 'body', 'created_at', 'user_id'];
+    protected $visible  = ['id', 'title', 'body', 'created_at', 'binary_id', 'binary_version_id',
+                           'server_id', 'user_id'];
 
     public static $relationsData = [
-        'user' => [self::BELONGS_TO, 'App\Models\User']
+        'binary'         => [self::BELONGS_TO, 'App\Models\Binary'],
+        'binary_version' => [self::BELONGS_TO, 'App\Models\BinaryVersion'],
+        'server'         => [self::BELONGS_TO, 'App\Models\Server'],
+        'user'           => [self::BELONGS_TO, 'App\Models\User']
     ];
     public static $rules = [
         'title' => 'required|between:1,100',
@@ -36,6 +40,36 @@ final class Message extends RESTModel
     public function isDeletableByUser(User $user)
     {
         return $this->isVisibleToUser($user);
+    }
+
+    /**
+     * Checks if this message belongs to a binary.
+     *
+     * @return bool true if this message references a binary
+     */
+    public function isForBinary()
+    {
+        return $this->binary !== null;
+    }
+
+    /**
+     * Checks if this message belongs to a binary version.
+     *
+     * @return bool true if this message references a binary version
+     */
+    public function isForBinaryVersion()
+    {
+        return $this->binary_version !== null;
+    }
+
+    /**
+     * Checks if this message belongs to a server.
+     *
+     * @return bool true if this message references a server
+     */
+    public function isForServer()
+    {
+        return $this->server !== null;
     }
 
     /**

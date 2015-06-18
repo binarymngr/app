@@ -9,6 +9,7 @@ final class Binary extends RESTModel
 
     public static $relationsData = [
         'categories' => [self::BELONGS_TO_MANY, 'App\Models\BinaryCategory', 'table' => 'binaries_categories'],
+        'messages'   => [self::HAS_MANY, 'App\Models\Message'],
         'owner'      => [self::BELONGS_TO, 'App\Models\User', 'foreignKey' => 'owner_id'],
         'versions'   => [self::HAS_MANY, 'App\Models\BinaryVersion'],
     ];
@@ -102,6 +103,16 @@ final class Binary extends RESTModel
     public function hasCategories()
     {
         return !$this->categories->isEmpty();
+    }
+
+    /**
+     * Checks if messages referencing this binary exist.
+     *
+     * @return bool true if at one message references this binary
+     */
+    public function hasMessages()
+    {
+        return $this->messages->isEmpty();
     }
 
     /**

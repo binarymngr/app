@@ -8,6 +8,7 @@ final class Server extends RESTModel
 
     public static $relationsData = [
         'binary_versions' => [self::BELONGS_TO_MANY, 'App\Models\BinaryVersion', 'table' => 'servers_binary_versions'],
+        'messages'        => [self::HAS_MANY, 'App\Models\Message'],
         'owner'           => [self::BELONGS_TO, 'App\Models\User', 'foreignKey' => 'owner_id']
     ];
     public static $rules = [
@@ -25,6 +26,16 @@ final class Server extends RESTModel
     public function hasBinariesInstalled()
     {
         return !$this->binary_versions()->isEmpty();  # TODO: $this->binary_version
+    }
+
+    /**
+     * Checks if messages referencing this binary exist.
+     *
+     * @return bool true if at one message references this binary
+     */
+    public function hasMessages()
+    {
+        return $this->messages->isEmpty();
     }
 
     /**

@@ -30,7 +30,9 @@ final class CreateEolMessages extends Command
         } else {
             $msg->title .= 'installed.';
             $msg->body  .= " and is installed on server '{$server->name}'. Make sure to upgrade soon!";
+            $msg->server_id = $server->id;
         }
+        $msg->binary_version_id = $binary_version->id;
         $msg->user_id = $binary_version->binary->owner->id;
         $msg->save();
     }
