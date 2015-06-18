@@ -39,13 +39,13 @@ $app->withEloquent();
 */
 
 $app->singleton(
-    'Illuminate\Contracts\Debug\ExceptionHandler',
-    'App\Exceptions\Handler'
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Exceptions\Handler::class
 );
 
 $app->singleton(
-    'Illuminate\Contracts\Console\Kernel',
-    'App\Console\Kernel'
+    Illuminate\Contracts\Console\Kernel::class,
+    App\Console\Kernel::class
 );
 
 /*
@@ -60,17 +60,17 @@ $app->singleton(
 */
 
 $app->middleware([
-    'Illuminate\Cookie\Middleware\EncryptCookies',
-    'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
-    'Illuminate\Session\Middleware\StartSession',
-    'Illuminate\View\Middleware\ShareErrorsFromSession',
-    'Laravel\Lumen\Http\Middleware\VerifyCsrfToken',
+    Illuminate\Cookie\Middleware\EncryptCookies::class,
+    Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+    Illuminate\Session\Middleware\StartSession::class,
+    Illuminate\View\Middleware\ShareErrorsFromSession::class,
+    Laravel\Lumen\Http\Middleware\VerifyCsrfToken::class,
 ]);
 
 $app->routeMiddleware([
-    'forceLoggedIn'      => 'App\Http\Middleware\RedirectLoginIfNotLoggedIn',
-    'forceAdminRole'     => 'App\Http\Middleware\UnauthorizedIfNotAdmin',
-    'forceVisibleToUser' => 'App\Http\Middleware\UnauthorizedIfNotVisibleToUser',
+    'forceLoggedIn'      => App\Http\Middleware\RedirectLoginIfNotLoggedIn::class,
+    'forceAdminRole'     => App\Http\Middleware\UnauthorizedIfNotAdmin::class,
+    'forceVisibleToUser' => App\Http\Middleware\UnauthorizedIfNotVisibleToUser::class,
 ]);
 
 /*
@@ -84,7 +84,8 @@ $app->routeMiddleware([
 |
 */
 
-$app->register('App\Providers\EventServiceProvider');
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,8 @@ $app->register('App\Providers\EventServiceProvider');
 |
 */
 
-require __DIR__.'/../app/Http/routes.php';
+$app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
+    require __DIR__.'/../app/Http/routes.php';
+});
 
 return $app;
