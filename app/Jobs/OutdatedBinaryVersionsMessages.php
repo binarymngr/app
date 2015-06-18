@@ -44,6 +44,7 @@ final class OutdatedBinaryVersionsMessages extends Job
                         $msg->body  = "Version '{$outdated->identifier}' of '{$outdated->binary->name}' is outdated";
                         $msg->body .= " and installed on server '{$server->name}'. Make sure to upgrade soon!";
                         $msg->binary_version_id = $outdated->id;
+                        $msg->server_id = $server->id;
                         $msg->user_id = $outdated->binary->owner->id;
                         $msg->save();
                     }
