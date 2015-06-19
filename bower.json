@@ -1,11 +1,13 @@
 {
-  "name": "binarymngr",
+  "name": "binarymngr-app",
+  "description": "Lumen framework powered binarymngr core application (mainly a REST API).",
+  "homepage": "https://github.com/binarymngr/app",
   "version": "0.0.1",
   "authors": [
     "Michel Käser <mail@michelkaeser.ch>"
   ],
   "license": "MIT",
-  "homepage": "https://phabricator.michelkaeser.ch/project/view/1/",
+  "keywords": ["binarymngr", "app"],
   "ignore": [
     "**/.*",
     "node_modules",

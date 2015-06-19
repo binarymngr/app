@@ -1,6 +1,7 @@
 BUGS:
     - replace line 876 in Ardent with 'return parent::query()->find($id, $columns);' because Laravel removed the
       find method
+    - replace all debug_backtrace(false); with debug_backtrace(false, 2); in Ardent for better performance
 
 
 FEATURES:
