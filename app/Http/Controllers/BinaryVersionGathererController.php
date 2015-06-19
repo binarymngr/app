@@ -17,7 +17,7 @@ final class BinaryVersionGathererController extends Controller
 
         $gatherers = [];
         foreach ($app->tagged('binary_version_gatherers') as $gatherer) {
-            $gatherers[] = $gatherer->getName();
+            $gatherers[] = ['name' => $gatherer->getName()];
         }
         return Collection::make($gatherers);
     }
