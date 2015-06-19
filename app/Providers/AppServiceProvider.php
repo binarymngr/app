@@ -13,6 +13,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // nothing to do
+        # register all the BinaryMngr\Contract\Gatherers\BinaryVersionGatherer implementations
+        // $this->app->bind('GithubTagsGatherer', function ($app) {
+        //     return new BinaryMngr\Lib\Gatherers\GithubTagsGatherer;
+        // });
+
+        # tag all binary version gatherers so we can easily access them elsewhere
+        $this->app->tag([
+            // 'GithubTagsGatherer'
+        ], 'binary_version_gatherers');
     }
 }
