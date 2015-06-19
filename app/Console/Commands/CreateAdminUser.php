@@ -18,11 +18,11 @@ final class CreateAdminUser extends Command
      */
     public function fire()
     {
-        $email = $this->ask('Email address:');
+        $email = $this->ask('Email address');
         $password = null; $password_confirm = null;
         while ($password === null || $password != $password_confirm) {
-            $password = $this->secret('Password:');
-            $password_confirm = $this->secret('Confirm password:');
+            $password = $this->secret('Password');
+            $password_confirm = $this->secret('Confirm password');
             if ($password != $password_confirm) {
                 $this->comment('Passwords did not match. Please try again.');
             }
