@@ -3,14 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\DeletingProtectedRecordException;
-use App\Http\Helpers\UserDependentGetAll;
 use Illuminate\Database\QueryException;
 
 final class RoleController extends RESTController
 {
-    use UserDependentGetAll;
-
-
     /**
      * @{inherit}
      */
@@ -26,9 +22,6 @@ final class RoleController extends RESTController
             'create',
             'deleteById',
             'putById'
-        ]]);
-        $this->middleware('forceVisibleToUser', ['only' => [
-            'getById'
         ]]);
     }
 

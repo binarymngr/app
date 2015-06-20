@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 
 /**
@@ -37,9 +38,7 @@ abstract class RESTController extends Controller
                 'id' => $record->id
             ]));
         } else {
-            $response = [
-                'errors' => $record->errors()->all()
-            ];
+            $response = ['errors' => $record->errors()->all()];
         }
         return $response;
     }
@@ -58,9 +57,11 @@ abstract class RESTController extends Controller
         $record = $model::find($id);
         if ($record === null) {
             abort(404);
-        } else {
+        } elseif ($record->isDeletableByUser(Auth::user())) {
             $record->delete();
             $response = response('', 204);
+        } else {
+            abort(401);
         }
         return $response;
     }
@@ -73,7 +74,7 @@ abstract class RESTController extends Controller
     public function getAll()
     {
         $model = static::$model;
-        return $model::all();
+        return $model::getAllVisibleToUser(Auth::user());
     }
 
     /**
@@ -90,8 +91,10 @@ abstract class RESTController extends Controller
         $record = $model::find($id);
         if ($record === null) {
             abort(404);
-        } else {
+        } elseif ($record->isVisibleToUser(Auth::user())) {
             $response = $record;
+        } else {
+            abort(401);
         }
         return $response;
     }
@@ -129,18 +132,21 @@ abstract class RESTController extends Controller
     public function putById(Request $rqst, $id)
     {
         $response = null;
+        $user = Auth::user();
         $model = static::$model;
         $record = $model::find($id);
         if ($record === null) {
-            abort(404);
-        # TODO: unique checks
-        } elseif ($record->validate() && $record->update()) {
-            $response = $record;
+            abort(404, 'Record not found.');
+        } elseif ($record->isUpdatableByUser($user)) {
+            # TODO: unique checks
+            if ($record->validate() && $record->update()) {
+                $response = $record;
+            } else {
+                $response = ['errors' => $record->errors()->all()];
+            }
         } else {
-            $response = [
-                'errors' => $record->errors()->all()
-            ];
+            abort(401);
         }
         return $response;
-    }
+     }
 }

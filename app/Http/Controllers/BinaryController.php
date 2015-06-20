@@ -2,32 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Helpers\RestrictedDeletable;
-use App\Http\Helpers\UserDependentGetAll;
 use App\Models\Binary;
 use Auth;
 use Illuminate\Http\Request;
 
 final class BinaryController extends RESTController
 {
-    use RestrictedDeletable, UserDependentGetAll;
-
-
     /**
      * @{inherit}
      */
     protected static $model = 'App\Models\Binary';
-
-
-    /**
-     * @{inherit}
-     */
-    public function __construct()
-    {
-        $this->middleware('forceVisibleToUser', ['only' => [
-            'getById'
-        ]]);
-    }
 
     /**
      * @{inherit}
@@ -45,7 +29,7 @@ final class BinaryController extends RESTController
     /**
      * @{inherit}
      *
-     * @Override to sync the user's roles
+     * @Override to sync the binary's categories
      */
      public function putById(Request $rqst, $id)
      {
@@ -60,9 +44,7 @@ final class BinaryController extends RESTController
                  $record->categories()->sync(is_array($category_ids) ? $category_ids : []);
                  $response = $record;
              } else {
-                 $response = [
-                     'errors' => $record->errors()->all()
-                 ];
+                 $response = ['errors' => $record->errors()->all()];
              }
          } else {
              abort(401);

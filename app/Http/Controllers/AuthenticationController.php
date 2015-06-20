@@ -36,8 +36,7 @@ final class AuthenticationController extends Controller
     {
         if (Auth::check()) {
             Auth::logout();
-            return redirect()->route('login')
-                             ->with('logged_out', true);
+            return redirect()->route('login')->with('logged_out', true);
         }
         return redirect()->route('login');
     }

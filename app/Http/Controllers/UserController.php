@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\DeletingProtectedRecordException;
-use App\Http\Helpers\UserDependentGetAll;
 use App\Models\User;
 use Auth;
 use Illuminate\Database\QueryException;
@@ -11,9 +10,6 @@ use Illuminate\Http\Request;
 
 final class UserController extends RESTController
 {
-    use UserDependentGetAll;
-
-
     /**
      * @{inherit}
      */
@@ -28,9 +24,6 @@ final class UserController extends RESTController
         $this->middleware('forceAdminRole', ['only' => [
             'create',
             'deleteById',
-        ]]);
-        $this->middleware('forceVisibleToUser', ['only' => [
-            'getById'
         ]]);
     }
 
@@ -78,9 +71,7 @@ final class UserController extends RESTController
                  }
                  $response = $record;
              } else {
-                 $response = [
-                     'errors' => $record->errors()->all()
-                 ];
+                 $response = ['errors' => $record->errors()->all()];
              }
          } else {
              abort(401);

@@ -2,33 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Helpers\RestrictedDeletable;
-use App\Http\Helpers\RestrictedUpdatable;
-use App\Http\Helpers\UserDependentGetAll;
 use App\Models\Binary;
 use Auth;
 use Illuminate\Http\Request;
 
 final class BinaryVersionController extends RESTController
 {
-    use RestrictedDeletable, RestrictedUpdatable, UserDependentGetAll;
-
-
     /**
      * @{inherit}
      */
     protected static $model = 'App\Models\BinaryVersion';
 
-
-    /**
-     * @{inherit}
-     */
-    public function __construct()
-    {
-        $this->middleware('forceVisibleToUser', ['only' => [
-            'getById'
-        ]]);
-    }
 
     /**
      * @{inherit}
