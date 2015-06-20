@@ -5,8 +5,10 @@ namespace App\Models;
 final class Binary extends RESTModel
 {
     protected $appends  = ['binary_category_ids', 'binary_version_ids'];
-    protected $fillable = ['name', 'description', 'homepage', 'owner_id'];
+    protected $fillable = ['name', 'description', 'homepage', 'owner_id',
+                           'versions_gatherer', 'versions_gatherer_meta'];
     protected $visible  = ['id', 'name', 'description', 'homepage', 'owner_id',
+                           'versions_gatherer', 'versions_gatherer_meta',
                            'binary_category_ids', 'binary_version_ids'];
 
     public static $relationsData = [
@@ -16,9 +18,10 @@ final class Binary extends RESTModel
         'versions'   => [self::HAS_MANY, 'App\Models\BinaryVersion'],
     ];
     public static $rules = [
-        'name'     => 'required|between:1,100',  # TODO: unique:binaries,name
-        'homepage' => 'url|between:1,100',
-        'owner_id' => 'required|exists:users,id|integer'
+        'name'              => 'required|between:1,100',  # TODO: unique:binaries,name
+        'homepage'          => 'url|between:1,100',
+        'owner_id'          => 'required|exists:users,id|integer',
+        'versions_gatherer' => 'between:1,100'
     ];
 
 
@@ -98,6 +101,23 @@ final class Binary extends RESTModel
     }
 
     /**
+     * Returns an instance of the set version gatherer.
+     *
+     * If no version gatherer is set, null is returned.
+     *
+     * @return \BinaryMngr\Contract\Gatherers\BinaryVersionsGatherer
+     */
+    public function getVersionsGatherer()
+    {
+        if ($this->hasVersionsGatherer()) {
+            $gatherer = app()->make($this->versions_gatherer);
+            $gatherer->setBinary($this->toArray());
+            return $gatherer->setMeta($this->versions_gatherer_meta);
+        }
+        return null;
+    }
+
+    /**
      * Checks if this binary is within a category.
      *
      * @return bool true if at least one category is associated with this binary
@@ -125,6 +145,16 @@ final class Binary extends RESTModel
     public function hasVersions()
     {
         return !$this->versions->isEmpty();
+    }
+
+    /**
+     * Checks if a versions gatherer is associated with this binary.
+     *
+     * @return bool true if a versions gatherer is set and exists
+     */
+    public function hasVersionsGatherer()
+    {
+        return $this->versions_gatherer !== null;  # TODO: check it really exists
     }
 
     /**

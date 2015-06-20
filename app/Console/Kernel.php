@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         'App\Console\Commands\CreateAdminUser',
         'App\Console\Commands\CreateEolMessages',
+        'App\Console\Commands\GatherBinaryVersions',
     ];
 
     /**
@@ -27,5 +28,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('binarymngr:create-eol-messages')->daily();
+        $schedule->command('binarymngr:gather-binary-versions')->daily();
     }
 }

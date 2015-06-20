@@ -29,6 +29,12 @@ $app->group(['middleware' => 'forceLoggedIn'], function($app)
 
 
     /*
+     | Binary version gatherers
+     */
+    $app->get('binaries/versions/gatherers', 'App\Http\Controllers\BinaryVersionGathererController@getAll');
+
+
+    /*
      | Binary versions
      */
     $app->delete ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@deleteById');
