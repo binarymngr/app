@@ -17,4 +17,15 @@ return [
 
     'eol_threshold' => 1,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Binary Versions Gatherers Cache Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | The lifetime in minutes that binary versions gatherers should be kept in
+    | cache before looking them up again.
+    |
+    */
+    'gatherers_cache_lifetime' => 10,
+
 ];

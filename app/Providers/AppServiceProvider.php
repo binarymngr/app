@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
         # tag all binary version gatherers so we can easily access them elsewhere
         $this->app->tag([
             'GithubTagsGatherer'
-        ], 'binary_version_gatherers');
+        ], 'binary_versions_gatherers');
     }
 }
 
