@@ -154,7 +154,7 @@ final class Binary extends RESTModel
      */
     public function hasVersionsGatherer()
     {
-        return $this->versions_gatherer !== null && isset(app()['$this->versions_gatherer']);
+        return $this->versions_gatherer !== null;  # TODO: check it really exists
     }
 
     /**
