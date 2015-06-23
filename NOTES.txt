@@ -1,10 +1,22 @@
 BUGS:
-    - replace line 876 in Ardent with 'return parent::query()->find($id, $columns);' because Laravel removed the
-      find method
-    - replace all debug_backtrace(false); with debug_backtrace(false, 2); in Ardent for better performance
 
 
 FEATURES:
-    - A send-message-mails command which sends a summary email with all unread messages to the user
-    - ESS/WebSocket support for the messages
-    - Useful permissions/roles implementation. Roles are useless right now.
+
+  [ ] A send-message-mails command which sends a summary email with all unread messages to the user?
+  [ ] SSEs/WebSocket support for the messages
+  [ ] Useful permissions/roles implementation. Roles are useless right now.
+
+
+HACKS:
+
+  [ ] smartmodel doesn't work with L5.1, so the following hack needs to be applied:
+      -> replace line 876 in Ardent with 'return parent::query()->find($id, $columns);'
+  [ ] smartmodel used debug_backtrace but does not limit the length. For performance,
+      replace the calls with: debug_backtrace(false, 2);  // or 4, depending on function
+
+
+IMPROVEMENTS:
+
+  [ ] Use nested route groups so prefixes are inherited. Doesn't work...
+  [ ] Use one global route group with the loggedIn middleware. Doesn't work with prefixes...
