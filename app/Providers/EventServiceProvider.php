@@ -15,7 +15,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         # directly passing the job as a callback doesn't work...therefor the workaround
-        BinaryVersion::created(function(BinaryVersion $binary_version) {
+        BinaryVersion::created(function (BinaryVersion $binary_version) {
             Queue::push(new OutdatedBinaryVersionsMessages($binary_version));
         });
     }

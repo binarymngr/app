@@ -31,7 +31,7 @@ final class BinaryVersion extends RESTModel
     {
         $versions = BinaryVersion::all();
         if (!$user->isAdmin()) {
-            $versions = $versions->reject(function($version) use ($user) {
+            $versions = $versions->reject(function ($version) use ($user) {
                 return !$version->isVisibleToUser($user);
             })->flatten();
         }

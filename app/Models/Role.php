@@ -47,7 +47,7 @@ final class Role extends RESTModel
     {
         $roles = Role::all();
         if (!$user->isAdmin()) {
-            $roles = $roles->reject(function($role) use ($user) {
+            $roles = $roles->reject(function ($role) use ($user) {
                 return !$role->isVisibleToUser($user);
             })->flatten();
         }

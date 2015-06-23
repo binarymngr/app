@@ -38,7 +38,7 @@ abstract class RESTModel extends Ardent
     public static function getAllVisibleToUser(User $user)
     {
         $visibles = static::all();
-        $visibles = $visibles->reject(function($visible) use ($user) {
+        $visibles = $visibles->reject(function ($visible) use ($user) {
             return !$visible->isVisibleToUser($user);
         })->flatten();
         return $visibles;

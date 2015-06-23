@@ -7,7 +7,6 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Database\Eloquent\Collection;
 
 final class User extends RESTModel implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -55,7 +54,7 @@ final class User extends RESTModel implements AuthenticatableContract, CanResetP
     {
         $users = User::all();
         if (!$user->isAdmin()) {
-            $users = Collection::make($user);
+            $users = collect($user);
         }
         return $users;
     }

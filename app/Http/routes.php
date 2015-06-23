@@ -54,7 +54,7 @@ $app->group(['middleware' => 'forceLoggedIn'], function ($app) {
     $app->group(['prefix' => 'messages'], function ($app) {
         $app->delete ('{id}', 'App\Http\Controllers\MessageController@deleteById');
         $app->get    ('{id}', 'App\Http\Controllers\MessageController@getById');
-        $app->get    ('/',     'App\Http\Controllers\MessageController@getAll');
+        $app->get    ('/',    'App\Http\Controllers\MessageController@getAll');
     });
 
     /* Roles */
