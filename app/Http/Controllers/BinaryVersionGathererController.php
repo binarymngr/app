@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Cache;
-use Illuminate\Database\Eloquent\Collection;
 
 final class BinaryVersionGathererController extends Controller
 {
@@ -27,7 +26,7 @@ final class BinaryVersionGathererController extends Controller
                     'description' => $gatherer->getDescription()
                 ];
             }
-            $gatherers = Collection::make($gatherers);
+            $gatherers = collect($gatherers);
             Cache::put('binary_versions_gatherers', $gatherers, \
                        config('binarymngr.gatherers_cache_lifetime'));
         }

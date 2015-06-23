@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Exceptions\DeletingProtectedRecordException;
-use Illuminate\Database\Eloquent\Collection;
 
 final class Role extends RESTModel
 {
@@ -62,7 +61,7 @@ final class Role extends RESTModel
      */
     public static function getProtectedRoles()
     {
-        return Collection::make([
+        return collect([
             Role::find(Role::ROLE_ID_ADMIN),
             Role::find(Role::ROLE_ID_USER)
         ]);
