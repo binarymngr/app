@@ -11,101 +11,87 @@
 |
 */
 
-/*
- | Routes protected by logged-in middleware
- */
-$app->group(['middleware' => 'forceLoggedIn'], function($app)
-{
-    /*
-     | Binary categories
-     */
-    $app->delete ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@deleteById');
-    $app->get    ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@getById');
-    $app->options('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@optionsForId');
-    $app->put    ('binaries/categories/{id}', 'App\Http\Controllers\BinaryCategoryController@putById');
-    $app->get    ('binaries/categories', 'App\Http\Controllers\BinaryCategoryController@getAll');
-    $app->options('binaries/categories', 'App\Http\Controllers\BinaryCategoryController@optionsForAll');
-    $app->post   ('binaries/categories', 'App\Http\Controllers\BinaryCategoryController@create');
+$app->group(['middleware' => 'forceLoggedIn'], function ($app) {
+    /* Binary Categories */
+    $app->group(['prefix' => 'binaries/categories'], function ($app) {
+        $app->delete ('{id}', 'App\Http\Controllers\BinaryCategoryController@deleteById');
+        $app->get    ('{id}', 'App\Http\Controllers\BinaryCategoryController@getById');
+        $app->options('{id}', 'App\Http\Controllers\BinaryCategoryController@optionsForId');
+        $app->put    ('{id}', 'App\Http\Controllers\BinaryCategoryController@putById');
+        $app->get    ('',     'App\Http\Controllers\BinaryCategoryController@getAll');
+        $app->options('',     'App\Http\Controllers\BinaryCategoryController@optionsForAll');
+        $app->post   ('',     'App\Http\Controllers\BinaryCategoryController@create');
+    });
 
+    /* Binary Versions Gatherers */
+    $app->group(['prefix' => 'binaries/versions/gatherers'], function ($app) {
+        $app->get('', 'App\Http\Controllers\BinaryVersionGathererController@getAll');
+    });
 
-    /*
-     | Binary version gatherers
-     */
-    $app->get('binaries/versions/gatherers', 'App\Http\Controllers\BinaryVersionGathererController@getAll');
+    /* Binary Versions */
+    $app->group(['prefix' => 'binaries/versions'], function ($app) {
+        $app->delete ('{id}', 'App\Http\Controllers\BinaryVersionController@deleteById');
+        $app->get    ('{id}', 'App\Http\Controllers\BinaryVersionController@getById');
+        $app->options('{id}', 'App\Http\Controllers\BinaryVersionController@optionsForId');
+        $app->put    ('{id}', 'App\Http\Controllers\BinaryVersionController@putById');
+        $app->get    ('',     'App\Http\Controllers\BinaryVersionController@getAll');
+        $app->options('',     'App\Http\Controllers\BinaryVersionController@optionsForAll');
+        $app->post   ('',     'App\Http\Controllers\BinaryVersionController@create');
+    });
 
+    /* Binaries */
+    $app->group(['prefix' => 'binaries'], function ($app) {
+        $app->delete ('{id}', 'App\Http\Controllers\BinaryController@deleteById');
+        $app->get    ('{id}', 'App\Http\Controllers\BinaryController@getById');
+        $app->options('{id}', 'App\Http\Controllers\BinaryController@optionsForId');
+        $app->put    ('{id}', 'App\Http\Controllers\BinaryController@putById');
+        $app->get    ('',     'App\Http\Controllers\BinaryController@getAll');
+        $app->options('',     'App\Http\Controllers\BinaryController@optionsForAll');
+        $app->post   ('',     'App\Http\Controllers\BinaryController@create');
+    });
 
-    /*
-     | Binary versions
-     */
-    $app->delete ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@deleteById');
-    $app->get    ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@getById');
-    $app->options('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@optionsForId');
-    $app->put    ('binaries/versions/{id}', 'App\Http\Controllers\BinaryVersionController@putById');
-    $app->get    ('binaries/versions', 'App\Http\Controllers\BinaryVersionController@getAll');
-    $app->options('binaries/versions', 'App\Http\Controllers\BinaryVersionController@optionsForAll');
-    $app->post   ('binaries/versions', 'App\Http\Controllers\BinaryVersionController@create');
+    /* Messages */
+    $app->group(['prefix' => 'messages'], function ($app) {
+        $app->delete ('{id}', 'App\Http\Controllers\MessageController@deleteById');
+        $app->get    ('{id}', 'App\Http\Controllers\MessageController@getById');
+        $app->get    ('/',     'App\Http\Controllers\MessageController@getAll');
+    });
 
+    /* Roles */
+    $app->group(['prefix' => 'roles'], function ($app) {
+        $app->delete ('{id}', 'App\Http\Controllers\RoleController@deleteById');
+        $app->get    ('{id}', 'App\Http\Controllers\RoleController@getById');
+        $app->options('{id}', 'App\Http\Controllers\RoleController@optionsForId');
+        $app->put    ('{id}', 'App\Http\Controllers\RoleController@putById');
+        $app->get    ('',     'App\Http\Controllers\RoleController@getAll');
+        $app->options('',     'App\Http\Controllers\RoleController@optionsForAll');
+        $app->post   ('',     'App\Http\Controllers\RoleController@create');
+    });
 
-    /*
-     | Binaries
-     */
-    $app->delete ('binaries/{id}', 'App\Http\Controllers\BinaryController@deleteById');
-    $app->get    ('binaries/{id}', 'App\Http\Controllers\BinaryController@getById');
-    $app->options('binaries/{id}', 'App\Http\Controllers\BinaryController@optionsForId');
-    $app->put    ('binaries/{id}', 'App\Http\Controllers\BinaryController@putById');
-    $app->get    ('binaries', 'App\Http\Controllers\BinaryController@getAll');
-    $app->options('binaries', 'App\Http\Controllers\BinaryController@optionsForAll');
-    $app->post   ('binaries', 'App\Http\Controllers\BinaryController@create');
+    /* Servers */
+    $app->group(['prefix' => 'servers'], function ($app) {
+        $app->delete ('{id}', 'App\Http\Controllers\ServerController@deleteById');
+        $app->get    ('{id}', 'App\Http\Controllers\ServerController@getById');
+        $app->options('{id}', 'App\Http\Controllers\ServerController@optionsForId');
+        $app->put    ('{id}', 'App\Http\Controllers\ServerController@putById');
+        $app->get    ('',     'App\Http\Controllers\ServerController@getAll');
+        $app->options('',     'App\Http\Controllers\ServerController@optionsForAll');
+        $app->post   ('',     'App\Http\Controllers\ServerController@create');
+    });
 
+    /* Users */
+    $app->group(['prefix' => 'users'], function ($app) {
+        $app->delete ('{id}', 'App\Http\Controllers\UserController@deleteById');
+        $app->get    ('{id}', 'App\Http\Controllers\UserController@getById');
+        $app->options('{id}', 'App\Http\Controllers\UserController@optionsForId');
+        $app->put    ('{id}', 'App\Http\Controllers\UserController@putById');
+        $app->get    ('',     'App\Http\Controllers\UserController@getAll');
+        $app->options('',     'App\Http\Controllers\UserController@optionsForAll');
+        $app->post   ('',     'App\Http\Controllers\UserController@create');
+    });
 
-    /*
-     | Messages
-     */
-    $app->delete ('messages/{id}', 'App\Http\Controllers\MessageController@deleteById');
-    $app->get    ('messages/{id}', 'App\Http\Controllers\MessageController@getById');
-    $app->get    ('messages', 'App\Http\Controllers\MessageController@getAll');
-
-
-    /*
-     | Roles
-     */
-    $app->delete ('roles/{id}', 'App\Http\Controllers\RoleController@deleteById');
-    $app->get    ('roles/{id}', 'App\Http\Controllers\RoleController@getById');
-    $app->options('roles/{id}', 'App\Http\Controllers\RoleController@optionsForId');
-    $app->put    ('roles/{id}', 'App\Http\Controllers\RoleController@putById');
-    $app->get    ('roles', 'App\Http\Controllers\RoleController@getAll');
-    $app->options('roles', 'App\Http\Controllers\RoleController@optionsForAll');
-    $app->post   ('roles', 'App\Http\Controllers\RoleController@create');
-
-
-    /*
-     | Servers
-     */
-    $app->delete ('servers/{id}', 'App\Http\Controllers\ServerController@deleteById');
-    $app->get    ('servers/{id}', 'App\Http\Controllers\ServerController@getById');
-    $app->options('servers/{id}', 'App\Http\Controllers\ServerController@optionsForId');
-    $app->put    ('servers/{id}', 'App\Http\Controllers\ServerController@putById');
-    $app->get    ('servers', 'App\Http\Controllers\ServerController@getAll');
-    $app->options('servers', 'App\Http\Controllers\ServerController@optionsForAll');
-    $app->post   ('servers', 'App\Http\Controllers\ServerController@create');
-
-
-    /*
-     | Users
-     */
-    $app->delete ('users/{id}', 'App\Http\Controllers\UserController@deleteById');
-    $app->get    ('users/{id}', 'App\Http\Controllers\UserController@getById');
-    $app->options('users/{id}', 'App\Http\Controllers\UserController@optionsForId');
-    $app->put    ('users/{id}', 'App\Http\Controllers\UserController@putById');
-    $app->get    ('users', 'App\Http\Controllers\UserController@getAll');
-    $app->options('users', 'App\Http\Controllers\UserController@optionsForAll');
-    $app->post   ('users', 'App\Http\Controllers\UserController@create');
-
-
-    /*
-     | Generics
-     */
-    $app->get('/', ['as' => 'dashboard', function() {
+    /* Generics */
+    $app->get('/', ['as' => 'dashboard', function () {
         if (view()->exists('app')) {
             return view('app')->with('user', Auth::user());
         }
@@ -113,14 +99,15 @@ $app->group(['middleware' => 'forceLoggedIn'], function($app)
     }]);
 });
 
-
-/*
- | Authentication
- */
- $app->get('auth/login', [
-    'as' => 'login', 'uses' => 'App\Http\Controllers\AuthenticationController@showLogin'
-]);
-$app->post('auth/login', 'App\Http\Controllers\AuthenticationController@login');
-$app->get('auth/logout', [
-    'as' => 'logout', 'uses' => 'App\Http\Controllers\AuthenticationController@logout'
-]);
+/* Authentication */
+$app->group(['prefix' => 'auth'], function ($app) {
+    $app->get('login', ['as' => 'login',
+        'uses' => 'App\Http\Controllers\AuthenticationController@showLogin'
+    ]);
+    $app->post('login', [
+        'uses' => 'App\Http\Controllers\AuthenticationController@login'
+    ]);
+    $app->get('logout', ['as' => 'logout',
+        'uses' => 'App\Http\Controllers\AuthenticationController@logout'
+    ]);
+});
