@@ -34,7 +34,7 @@ final class Role extends RESTModel
         parent::boot();
         Role::deleting(function(Role $role)
         {
-            if (Role::getProtectedRoles()->contains($role->id)) {
+            if (Role::getProtectedRoles()->contains($role)) {
                 throw new DeletingProtectedRecordException($role, 'Cannot delete this protected role.');
             }
         });
