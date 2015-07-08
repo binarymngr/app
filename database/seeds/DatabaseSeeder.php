@@ -13,8 +13,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-
         $this->call('RoleTableSeeder');
         $this->command->info('Role table seeded!');
+        Model::reguard();
     }
 }
