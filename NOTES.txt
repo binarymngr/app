@@ -4,6 +4,7 @@ BUGS:
 FEATURES:
 
   [ ] A send-message-mails command which sends a summary email with all unread messages to the user?
+  [ ] Binaries depending on other ones (i.e. libraries, Nginx on OpenSSL etc.)
   [ ] SSEs/WebSocket support for the messages
   [ ] Useful permissions/roles implementation. Roles are useless right now.
 
@@ -18,5 +19,6 @@ HACKS:
 
 IMPROVEMENTS:
 
+  [ ] Don't create EOL messages if one already exists
   [ ] Use nested route groups so prefixes are inherited. Doesn't work...
   [ ] Use one global route group with the loggedIn middleware. Doesn't work with prefixes...
