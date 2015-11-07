@@ -1,8 +1,11 @@
 /bootstrap/cache
 /.env
 /lumen.log
-/public/components
 /storage/database.sqlite
+/storage/logs
+/storage/framework/cache
+.env
+.env.example
 /vendor
 
 # binarymngr-ui
